@@ -8,94 +8,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="_layout.css"/>
   <style>
-    /* ── SMOOTH SCROLL ── */
-    html { scroll-behavior: smooth; }
-
-    /* ── PAGE FADE IN ── */
-    .main { animation: fadeIn 0.6s ease both; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
-
-    /* ── HERO ── */
     .hero {
-      display:flex; align-items:flex-start; gap:2rem;
-      background:var(--white); border-radius:8px;
-      padding:1.8rem 2rem; margin-bottom:2rem;
-      box-shadow:0 1px 6px rgba(0,0,0,0.06);
-      border-top:4px solid var(--teal);
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      border-top: 4px solid var(--teal);
     }
-    .hero-text h1 { font-size:1.7rem; color:var(--navy); font-weight:700; margin-bottom:0.2rem; }
-    .hero-text .tagline { color:var(--teal-dark); font-size:0.95rem; font-weight:600; margin-bottom:0.8rem; }
-    .hero-text p { font-size:0.9rem; color:var(--text-mid); max-width:560px; line-height:1.7; margin-bottom:0.6rem; }
-    .contact-row { display:flex; flex-wrap:wrap; gap:0.6rem 1.4rem; margin-top:0.8rem; font-size:0.82rem; color:var(--text-mid); }
-    .contact-row a { color:var(--teal); }
-
-    /* ── QUOTE BOX ── */
+    .hero-text h1 {
+      font-size: 1.7rem;
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .hero-text .tagline {
+      color: var(--teal-dark);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    .hero-text p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 0.6rem;
+    }
+    .hero-photo {
+      width: 130px;
+      min-width: 130px;
+      height: 130px;
+      border-radius: 6px;
+      background: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-size: 0.78rem;
+      text-align: center;
+      border: 2px solid var(--grey-mid);
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.4rem;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+    }
+    .contact-row a { color: var(--teal); }
     .highlight-box {
-      background:var(--navy); color:rgba(255,255,255,0.88);
-      border-radius:6px; padding:1rem 1.4rem; font-size:0.88rem;
-      font-style:italic; margin-bottom:2rem; line-height:1.6;
+      background: var(--navy);
+      color: rgba(255,255,255,0.88);
+      border-radius: 6px;
+      padding: 1rem 1.4rem;
+      font-size: 0.88rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+      line-height: 1.6;
     }
-    .highlight-box span { color:rgba(255,255,255,0.5); font-size:0.78rem; display:block; margin-top:0.4rem; font-style:normal; }
-
-    /* ── NEWS TICKER ── */
-    .ticker-wrap {
-      background:var(--navy); border-radius:6px; overflow:hidden;
-      padding:0; margin-bottom:2rem; display:flex; align-items:stretch;
-    }
-    .ticker-label {
-      background:var(--teal); color:#fff; font-size:0.78rem; font-weight:700;
-      text-transform:uppercase; letter-spacing:0.08em; padding:0.7rem 1rem;
-      white-space:nowrap; display:flex; align-items:center; flex-shrink:0;
-    }
-    .ticker-outer { overflow:hidden; flex:1; display:flex; align-items:center; }
-    .ticker-inner { display:flex; gap:0; animation:ticker 32s linear infinite; white-space:nowrap; }
-    .ticker-inner:hover { animation-play-state:paused; }
-    .ticker-item { color:rgba(255,255,255,0.88); font-size:0.84rem; padding:0.7rem 2.5rem 0.7rem 0; flex-shrink:0; }
-    .ticker-item a { color:rgba(255,255,255,0.88); text-decoration:none; }
-    .ticker-item a:hover { color:#fff; text-decoration:underline; }
-    .ticker-item strong { color:#fff; }
-    .ticker-sep { color:var(--teal); padding-right:2.5rem; font-size:0.84rem; flex-shrink:0; line-height:2.4; }
-    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
-    /* ── CAREER TIMELINE ── */
-    .timeline { position:relative; padding-left:2rem; }
-    .timeline::before {
-      content:''; position:absolute; left:0.45rem; top:0.4rem; bottom:0.4rem;
-      width:2px; background:var(--grey-mid);
-    }
-    .tl-item { position:relative; margin-bottom:1.4rem; }
-    .tl-item::before {
-      content:''; position:absolute; left:-1.62rem; top:0.35rem;
-      width:12px; height:12px; border-radius:50%;
-      background:var(--teal); border:2px solid var(--white);
-      box-shadow:0 0 0 2px var(--teal);
-    }
-    .tl-year { font-size:0.78rem; font-weight:700; color:var(--teal-dark); margin-bottom:0.15rem; }
-    .tl-title { font-size:0.92rem; font-weight:700; color:var(--navy); }
-    .tl-place { font-size:0.82rem; color:var(--text-mid); }
-
-    /* ── SECTION FADE IN ON SCROLL ── */
-    .fade-section { opacity:0; transform:translateY(18px); transition:opacity 0.5s ease, transform 0.5s ease; }
-    .fade-section.visible { opacity:1; transform:none; }
-
-    /* ── TAG HOVER ── */
-    .tag { transition:background 0.2s, color 0.2s, transform 0.15s; cursor:default; }
-    .tag:hover { background:var(--teal); color:#fff; transform:scale(1.06); }
-
-    /* ── CARD HOVER ── */
-    .card { transition:box-shadow 0.2s, transform 0.2s; }
-    .card:hover { box-shadow:0 4px 16px rgba(14,124,123,0.13); transform:translateY(-2px); }
-
-    /* ── BACK TO TOP ── */
-    #back-top {
-      position:fixed; bottom:2rem; right:2rem; width:40px; height:40px;
-      background:var(--teal); color:#fff; border:none; border-radius:50%;
-      font-size:1.1rem; cursor:pointer; display:none; align-items:center;
-      justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.18);
-      transition:background 0.2s, transform 0.2s; z-index:999;
-    }
-    #back-top:hover { background:var(--navy); transform:translateY(-2px); }
-    #back-top.show { display:flex; }
+    .highlight-box span { color: rgba(255,255,255,0.5); font-size: 0.78rem; display: block; margin-top: 0.4rem; font-style: normal; }
   </style>
 </head>
 <body>
@@ -107,22 +83,24 @@
   </div>
   <nav>
     <a href="index.html" class="active">About</a>
-    <a href="publications.html">Publications &amp; Talks</a>
+    <a href="publications.html">Publications & Talks</a>
     <a href="teaching.html">Teaching</a>
     <a href="videos.html">Videos</a>
     <a href="blog.html">Blog</a>
     <a href="talks.html">News</a>
   </nav>
-  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India</div>
+  <div class="sidebar-footer">
+    sheera.shms@gmail.com<br>
+    Kollam, Kerala, India
+  </div>
 </aside>
 
 <main class="main">
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-text">
       <h1>Sheera Shamsu</h1>
-      <div class="tagline">Mechanized Formal Verification Specialist · PhD IIT Madras · Assistant Professor</div>
+      <div class="tagline">Mechanized Formal Verification · PhD IIT Madras · Assistant Professor</div>
       <p>I build <strong>machine-checked proofs for real systems</strong> — verified garbage collectors,
       cryptographic protocol state machines, and formally verified data structures — using
       Pulse (Separation Logic), F*/Low*, and the KaRaMeL compiler toolchain.</p>
@@ -135,55 +113,25 @@
         <span>📍 Kollam, Kerala, India</span>
       </div>
     </div>
-    <img src="profile.jpg" alt="Sheera Shamsu" onerror="this.style.display='none'"
-      style="width:130px;min-width:130px;height:160px;object-fit:cover;object-position:center top;
-             border-radius:6px;border:2px solid var(--grey-mid);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
+    <div class="hero-photo">Add your<br>photo here<br><small>(profile.jpg)</small></div>
   </div>
 
-
-
-  <!-- QUOTE -->
-  <div class="highlight-box fade-section">
+  <div class="highlight-box">
     "It is reasonable to expect that the relationship between computer science and mathematical logic
     will be as fruitful in the next century as that between physics and analysis in the last."
     <span>— John McCarthy, 1963</span>
   </div>
 
-  <!-- TICKER -->
-  <div class="ticker-wrap">
-    <div class="ticker-label">📰 Latest News</div>
-    <div class="ticker-outer">
-      <div class="ticker-inner">
-        <span class="ticker-item"><a href="talks.html"><strong>Jun 2025</strong> — New MSR Collaboration: pulse-verified-gc — verified generational GC for OCaml 4.14 in F*/Pulse · 223 files · 104k lines</a></span>
-        <span class="ticker-sep">◆</span>
-                <span class="ticker-item"><a href="talks.html"><strong>May 2025</strong> — Journal paper published: "A Mechanically Verified Garbage Collector for OCaml", Journal of Automated Reasoning, Springer</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>2025</strong> — Session Chair &amp; Official Reviewer, OCaml Workshop 2025, ICFP/SPLASH, Singapore</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>2024</strong> — MSR Mainline Contributor: AVL Tree library in Pulse merged into official Microsoft Research repository</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>Jun–Aug 2024</strong> — Research Intern at Microsoft Research Bangalore: SPDM protocol verification in Pulse/Separation Logic</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>Apr 2025</strong> — Workshop participant: Lean for the Curious Mathematician 2025, ICTS-TIFR, Bangalore</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>Jun 2025</strong> — New MSR Collaboration: pulse-verified-gc — verified generational GC for OCaml 4.14 in F*/Pulse · 223 files · 104k lines</a></span>
-        <span class="ticker-sep">◆</span>
-                <span class="ticker-item"><a href="talks.html"><strong>May 2025</strong> — Journal paper published: "A Mechanically Verified Garbage Collector for OCaml", Journal of Automated Reasoning, Springer</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>2025</strong> — Session Chair &amp; Official Reviewer, OCaml Workshop 2025, ICFP/SPLASH, Singapore</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>2024</strong> — MSR Mainline Contributor: AVL Tree library in Pulse merged into official Microsoft Research repository</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>Jun–Aug 2024</strong> — Research Intern at Microsoft Research Bangalore: SPDM protocol verification in Pulse/Separation Logic</a></span>
-        <span class="ticker-sep">◆</span>
-        <span class="ticker-item"><a href="talks.html"><strong>Apr 2025</strong> — Workshop participant: Lean for the Curious Mathematician 2025, ICTS-TIFR, Bangalore</a></span>
-        <span class="ticker-sep">◆</span>
-      </div>
-    </div>
-  </div>
+  <section>
+    <h2>Latest News</h2>
+    <div class="news-item"><div class="news-date">May 2025</div><div>Journal paper published — <strong>"A Mechanically Verified Garbage Collector for OCaml"</strong>, Journal of Automated Reasoning, Springer. First mechanically verified, competitive, stop-the-world mark-and-sweep GC integrated with the OCaml runtime.</div></div>
+    <div class="news-item"><div class="news-date">2025</div><div>Session Chair &amp; Official Reviewer — <strong>OCaml Workshop 2025</strong>, ICFP/SPLASH 2025, Singapore. Global peer recognition as Subject Matter Expert in functional programming and formal verification.</div></div>
+    <div class="news-item"><div class="news-date">2024</div><div>MSR Mainline Contributor — Designed, verified, and merged a complete <strong>AVL Tree library in Pulse</strong> into the official Microsoft Research Pulse repository. Collaborated with Senior Principal Researcher (MSR Redmond) and Principal Researcher (MSR Bangalore).</div></div>
+    <div class="news-item"><div class="news-date">2024</div><div>Research Intern at <strong>Microsoft Research Bangalore</strong> — Formally verified the measurement extraction phase of the SPDM security protocol as a state machine in Pulse/Separation Logic.</div></div>
+    <div class="news-item"><div class="news-date">Apr 2025</div><div>Workshop participant — <strong>Lean for the Curious Mathematician 2025</strong>, ICTS-TIFR, Bangalore.</div></div>
+  </section>
 
-  <!-- RESEARCH INTERESTS -->
-  <section class="fade-section">
+  <section>
     <h2>Research Interests</h2>
     <div class="tags">
       <span class="tag">Mechanized Formal Verification</span>
@@ -199,79 +147,24 @@
     </div>
   </section>
 
-  <!-- CAREER TIMELINE -->
-  <section class="fade-section">
-    <h2>Career Timeline</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-year">Aug 2023 – Present</div>
-        <div class="tl-title">Assistant Professor</div>
-        <div class="tl-place">TKM College of Engineering, Kollam · Govt. Aided &amp; Autonomous</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-year">Jun – Aug 2024</div>
-        <div class="tl-title">Research Intern</div>
-        <div class="tl-place">Microsoft Research Bangalore · SPDM Protocol Verification &amp; AVL Tree in Pulse</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-year">Aug 2020 – Present</div>
-        <div class="tl-title">PhD, Computer Science &amp; Engineering</div>
-        <div class="tl-place">IIT Madras (NIRF Rank 1) · CGPA 8.5/10 · Teaching Assistant 2021–2023</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-year">Aug 2016 – Aug 2020</div>
-        <div class="tl-title">Assistant Professor</div>
-        <div class="tl-place">TKM College of Engineering, Kollam · Functional Programming, Cryptography, Networks</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-year">Jul 2011 – Jun 2016</div>
-        <div class="tl-title">Software Engineer — Validation Lead</div>
-        <div class="tl-place">Intel Technology India Pvt. Ltd., Bangalore · Broadwell GPU Platform</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-year">Jul 2009 – Jul 2011</div>
-        <div class="tl-title">M.Tech, Computer Science &amp; Engineering</div>
-        <div class="tl-place">NIT Calicut · CGPA 9.02/10 · Research Intern at Intel 2010–2011</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- KEY CREDENTIALS -->
-  <section class="fade-section">
+  <section>
     <h2>Key Credentials</h2>
     <div class="card">
       <div class="card-title">PhD, Computer Science &amp; Engineering</div>
       <div class="card-meta">IIT Madras (NIRF Rank 1) · 2020–Present · CGPA 8.5/10</div>
-      <p>Thesis: "A Mechanically Verified Garbage Collector for OCaml" — published in Journal of Automated Reasoning, Springer, May 2025.</p>
+      <p>Thesis: "A Mechanically Verified Garbage Collector for OCaml" — published in Journal of Automated Reasoning, Springer, May 2025. Developed a verified stop-the-world mark-and-sweep GC in F*/Low*, compiled to C via KaRaMeL, integrated with the OCaml runtime.</p>
     </div>
     <div class="card">
       <div class="card-title">GATE 2009 — All India Rank 550</div>
       <div class="card-meta">98.67 percentile · Computer Science &amp; Engineering</div>
     </div>
     <div class="card">
-      <div class="card-title">5+ Years Industrial Experience — Intel</div>
+      <div class="card-title">5+ Years Industrial Experience</div>
       <div class="card-meta">Intel Technology India Pvt. Ltd. · Bangalore · 2011–2016</div>
-      <p>Post-Silicon functional validation lead for Intel's first low-power mobile GPU platform.</p>
+      <p>Post-Silicon functional validation lead for Intel's first low-power mobile GPU platform. Owned Power Conservation and Video Post Processing components of Intel's Broadwell Graphics Driver.</p>
     </div>
   </section>
 
 </main>
-
-<!-- BACK TO TOP -->
-<button id="back-top" title="Back to top">↑</button>
-
-<script>
-  // ── SCROLL FADE IN ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
-
-  // ── BACK TO TOP ──
-  const btn = document.getElementById('back-top');
-  window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 300));
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-</script>
-
 </body>
 </html>
