@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sheera Shamsu — Formal Verification Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_layout.css"/>
+  <style>
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      border-top: 4px solid var(--teal);
+    }
+    .hero-text h1 {
+      font-size: 1.7rem;
+      color: var(--navy);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .hero-text .tagline {
+      color: var(--teal-dark);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    .hero-text p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 0.6rem;
+    }
+    .hero-photo {
+      width: 130px;
+      min-width: 130px;
+      height: 130px;
+      border-radius: 6px;
+      background: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-size: 0.78rem;
+      text-align: center;
+      border: 2px solid var(--grey-mid);
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1.4rem;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+    }
+    .contact-row a { color: var(--teal); }
+    .highlight-box {
+      background: var(--navy);
+      color: rgba(255,255,255,0.88);
+      border-radius: 6px;
+      padding: 1rem 1.4rem;
+      font-size: 0.88rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .highlight-box span { color: rgba(255,255,255,0.5); font-size: 0.78rem; display: block; margin-top: 0.4rem; font-style: normal; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="name">Sheera Shamsu</div>
+    <div class="role">Formal Verification Researcher<br>Assistant Professor, TKM College</div>
+  </div>
+  <nav>
+    <a href="index.html" class="active">About</a>
+    <a href="publications.html">Publications & Talks</a>
+    <a href="teaching.html">Teaching</a>
+    <a href="videos.html">Videos</a>
+    <a href="blog.html">Blog</a>
+    <a href="talks.html">News</a>
+  </nav>
+  <div class="sidebar-footer">
+    sheera.shms@gmail.com<br>
+    Kollam, Kerala, India
+  </div>
+</aside>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Sheera Shamsu</h1>
+      <div class="tagline">Mechanized Formal Verification · PhD IIT Madras · Assistant Professor</div>
+      <p>I build <strong>machine-checked proofs for real systems</strong> — verified garbage collectors,
+      cryptographic protocol state machines, and formally verified data structures — using
+      Pulse (Separation Logic), F*/Low*, and the KaRaMeL compiler toolchain.</p>
+      <p>I am uniquely positioned at the intersection of five years of industrial systems engineering
+      at Intel, PhD-level formal verification research at IIT Madras (NIRF Rank 1), and
+      cutting-edge research practice at Microsoft Research Bangalore.</p>
+      <div class="contact-row">
+        <span>📧 <a href="mailto:sheera.shms@gmail.com">sheera.shms@gmail.com</a></span>
+        <span>🔗 <a href="https://linkedin.com/in/sheera-shamsu-70377522" target="_blank">LinkedIn</a></span>
+        <span>📍 Kollam, Kerala, India</span>
+      </div>
+    </div>
+    <div class="hero-photo">Add your<br>photo here<br><small>(profile.jpg)</small></div>
+  </div>
+
+  <div class="highlight-box">
+    "It is reasonable to expect that the relationship between computer science and mathematical logic
+    will be as fruitful in the next century as that between physics and analysis in the last."
+    <span>— John McCarthy, 1963</span>
+  </div>
+
+  <section>
+    <h2>Latest News</h2>
+    <div class="news-item"><div class="news-date">May 2025</div><div>Journal paper published — <strong>"A Mechanically Verified Garbage Collector for OCaml"</strong>, Journal of Automated Reasoning, Springer. First mechanically verified, competitive, stop-the-world mark-and-sweep GC integrated with the OCaml runtime.</div></div>
+    <div class="news-item"><div class="news-date">2025</div><div>Session Chair &amp; Official Reviewer — <strong>OCaml Workshop 2025</strong>, ICFP/SPLASH 2025, Singapore. Global peer recognition as Subject Matter Expert in functional programming and formal verification.</div></div>
+    <div class="news-item"><div class="news-date">2024</div><div>MSR Mainline Contributor — Designed, verified, and merged a complete <strong>AVL Tree library in Pulse</strong> into the official Microsoft Research Pulse repository. Collaborated with Senior Principal Researcher (MSR Redmond) and Principal Researcher (MSR Bangalore).</div></div>
+    <div class="news-item"><div class="news-date">2024</div><div>Research Intern at <strong>Microsoft Research Bangalore</strong> — Formally verified the measurement extraction phase of the SPDM security protocol as a state machine in Pulse/Separation Logic.</div></div>
+    <div class="news-item"><div class="news-date">Apr 2025</div><div>Workshop participant — <strong>Lean for the Curious Mathematician 2025</strong>, ICTS-TIFR, Bangalore.</div></div>
+  </section>
+
+  <section>
+    <h2>Research Interests</h2>
+    <div class="tags">
+      <span class="tag">Mechanized Formal Verification</span>
+      <span class="tag">Separation Logic (Pulse)</span>
+      <span class="tag">F* / Low*</span>
+      <span class="tag">Verified Garbage Collection</span>
+      <span class="tag">Cryptographic Protocol Verification</span>
+      <span class="tag">Proof-Oriented Programming</span>
+      <span class="tag">AI-Assisted Verification</span>
+      <span class="tag">Verified Parsers</span>
+      <span class="tag">KaRaMeL Compiler</span>
+      <span class="tag">OCaml Runtime</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Key Credentials</h2>
+    <div class="card">
+      <div class="card-title">PhD, Computer Science &amp; Engineering</div>
+      <div class="card-meta">IIT Madras (NIRF Rank 1) · 2020–Present · CGPA 8.5/10</div>
+      <p>Thesis: "A Mechanically Verified Garbage Collector for OCaml" — published in Journal of Automated Reasoning, Springer, May 2025. Developed a verified stop-the-world mark-and-sweep GC in F*/Low*, compiled to C via KaRaMeL, integrated with the OCaml runtime.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">GATE 2009 — All India Rank 550</div>
+      <div class="card-meta">98.67 percentile · Computer Science &amp; Engineering</div>
+    </div>
+    <div class="card">
+      <div class="card-title">5+ Years Industrial Experience</div>
+      <div class="card-meta">Intel Technology India Pvt. Ltd. · Bangalore · 2011–2016</div>
+      <p>Post-Silicon functional validation lead for Intel's first low-power mobile GPU platform. Owned Power Conservation and Video Post Processing components of Intel's Broadwell Graphics Driver.</p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
