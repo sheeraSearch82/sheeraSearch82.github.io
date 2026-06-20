@@ -8,70 +8,93 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="_layout.css"/>
   <style>
+    /* ── PAGE FADE IN ── */
+    .main { animation: fadeIn 0.6s ease both; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+    /* ── HERO ── */
     .hero {
-      display: flex;
-      align-items: flex-start;
-      gap: 2rem;
-      background: var(--white);
-      border-radius: 8px;
-      padding: 1.8rem 2rem;
-      margin-bottom: 2rem;
+      display: flex; align-items: flex-start; gap: 2rem;
+      background: var(--white); border-radius: 8px;
+      padding: 1.8rem 2rem; margin-bottom: 2rem;
       box-shadow: 0 1px 6px rgba(0,0,0,0.06);
       border-top: 4px solid var(--teal);
+      animation: fadeIn 0.7s ease both;
     }
-    .hero-text h1 {
-      font-size: 1.7rem;
-      color: var(--navy);
-      font-weight: 700;
-      margin-bottom: 0.2rem;
+    .hero-text h1 { font-size:1.7rem; color:var(--navy); font-weight:700; margin-bottom:0.2rem; }
+    .hero-text .tagline { color:var(--teal-dark); font-size:0.95rem; font-weight:600; margin-bottom:0.8rem; }
+    .hero-text p { font-size:0.9rem; color:var(--text-mid); max-width:560px; line-height:1.7; margin-bottom:0.6rem; }
+    .contact-row { display:flex; flex-wrap:wrap; gap:0.6rem 1.4rem; margin-top:0.8rem; font-size:0.82rem; color:var(--text-mid); }
+    .contact-row a { color:var(--teal); }
+
+    /* ── QUOTE BOX ── */
+    .highlight-box {
+      background: var(--navy); color:rgba(255,255,255,0.88);
+      border-radius:6px; padding:1rem 1.4rem; font-size:0.88rem;
+      font-style:italic; margin-bottom:2rem; line-height:1.6;
     }
-    .hero-text .tagline {
-      color: var(--teal-dark);
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.8rem;
-    }
-    .hero-text p {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 0.6rem;
-    }
-    .hero-photo {
-      width: 130px;
-      min-width: 130px;
-      height: 130px;
+    .highlight-box span { color:rgba(255,255,255,0.5); font-size:0.78rem; display:block; margin-top:0.4rem; font-style:normal; }
+
+    /* ── NEWS TICKER ── */
+    .ticker-wrap {
+      background: var(--navy);
       border-radius: 6px;
-      background: var(--teal-light);
+      overflow: hidden;
+      padding: 0;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: stretch;
+    }
+    .ticker-label {
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.7rem 1rem;
+      white-space: nowrap;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--teal);
-      font-size: 0.78rem;
-      text-align: center;
-      border: 2px solid var(--grey-mid);
+      flex-shrink: 0;
     }
-    .contact-row {
+    .ticker-outer {
+      overflow: hidden;
+      flex: 1;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem 1.4rem;
-      margin-top: 0.8rem;
-      font-size: 0.82rem;
-      color: var(--text-mid);
+      align-items: center;
     }
-    .contact-row a { color: var(--teal); }
-    .highlight-box {
-      background: var(--navy);
+    .ticker-inner {
+      display: flex;
+      gap: 0;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-inner:hover { animation-play-state: paused; }
+    .ticker-item {
       color: rgba(255,255,255,0.88);
-      border-radius: 6px;
-      padding: 1rem 1.4rem;
-      font-size: 0.88rem;
-      font-style: italic;
-      margin-bottom: 2rem;
-      line-height: 1.6;
+      font-size: 0.84rem;
+      padding: 0.7rem 2.5rem 0.7rem 0;
+      flex-shrink: 0;
     }
-    .highlight-box span { color: rgba(255,255,255,0.5); font-size: 0.78rem; display: block; margin-top: 0.4rem; font-style: normal; }
+    .ticker-item strong { color: #fff; }
+    .ticker-sep { color: var(--teal); padding-right: 2.5rem; font-size:0.84rem; flex-shrink:0; line-height:2.4; }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION FADE IN ON SCROLL ── */
+    .fade-section { opacity:0; transform:translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-section.visible { opacity:1; transform:none; }
+
+    /* ── TAG HOVER ── */
+    .tag { transition: background 0.2s, color 0.2s, transform 0.15s; cursor:default; }
+    .tag:hover { background: var(--teal); color:#fff; transform:scale(1.06); }
+
+    /* ── CARD HOVER ── */
+    .card { transition: box-shadow 0.2s, transform 0.2s; }
+    .card:hover { box-shadow: 0 4px 16px rgba(14,124,123,0.13); transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -83,16 +106,13 @@
   </div>
   <nav>
     <a href="index.html" class="active">About</a>
-    <a href="publications.html">Publications & Talks</a>
+    <a href="publications.html">Publications &amp; Talks</a>
     <a href="teaching.html">Teaching</a>
     <a href="videos.html">Videos</a>
     <a href="blog.html">Blog</a>
     <a href="talks.html">News</a>
   </nav>
-  <div class="sidebar-footer">
-    sheera.shms@gmail.com<br>
-    Kollam, Kerala, India
-  </div>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India</div>
 </aside>
 
 <main class="main">
@@ -113,7 +133,9 @@
         <span>📍 Kollam, Kerala, India</span>
       </div>
     </div>
-    <img src="profile.jpg" alt="Sheera Shamsu" class="hero-photo" onerror="this.style.display='none'" style="width:130px;min-width:130px;height:160px;object-fit:cover;object-position:center top;border-radius:6px;border:2px solid var(--grey-mid);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
+    <img src="profile.jpg" alt="Sheera Shamsu" onerror="this.style.display='none'"
+      style="width:130px;min-width:130px;height:160px;object-fit:cover;object-position:center top;
+             border-radius:6px;border:2px solid var(--grey-mid);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
   </div>
 
   <div class="highlight-box">
@@ -122,16 +144,37 @@
     <span>— John McCarthy, 1963</span>
   </div>
 
-  <section>
-    <h2>Latest News</h2>
-    <div class="news-item"><div class="news-date">May 2025</div><div>Journal paper published — <strong>"A Mechanically Verified Garbage Collector for OCaml"</strong>, Journal of Automated Reasoning, Springer. First mechanically verified, competitive, stop-the-world mark-and-sweep GC integrated with the OCaml runtime.</div></div>
-    <div class="news-item"><div class="news-date">2025</div><div>Session Chair &amp; Official Reviewer — <strong>OCaml Workshop 2025</strong>, ICFP/SPLASH 2025, Singapore. Global peer recognition as Subject Matter Expert in functional programming and formal verification.</div></div>
-    <div class="news-item"><div class="news-date">2024</div><div>MSR Mainline Contributor — Designed, verified, and merged a complete <strong>AVL Tree library in Pulse</strong> into the official Microsoft Research Pulse repository. Collaborated with Senior Principal Researcher (MSR Redmond) and Principal Researcher (MSR Bangalore).</div></div>
-    <div class="news-item"><div class="news-date">2024</div><div>Research Intern at <strong>Microsoft Research Bangalore</strong> — Formally verified the measurement extraction phase of the SPDM security protocol as a state machine in Pulse/Separation Logic.</div></div>
-    <div class="news-item"><div class="news-date">Apr 2025</div><div>Workshop participant — <strong>Lean for the Curious Mathematician 2025</strong>, ICTS-TIFR, Bangalore.</div></div>
-  </section>
+  <!-- SCROLLING NEWS TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-label">📰 Latest News</div>
+    <div class="ticker-outer">
+      <div class="ticker-inner" id="ticker">
+        <span class="ticker-item"><strong>May 2025</strong> — Journal paper published: "A Mechanically Verified Garbage Collector for OCaml", Journal of Automated Reasoning, Springer</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>2025</strong> — Session Chair &amp; Official Reviewer, OCaml Workshop 2025, ICFP/SPLASH, Singapore</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>2024</strong> — MSR Mainline Contributor: AVL Tree library in Pulse merged into official Microsoft Research repository</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>Jun–Aug 2024</strong> — Research Intern at Microsoft Research Bangalore: SPDM protocol verification in Pulse/Separation Logic</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>Apr 2025</strong> — Workshop participant: Lean for the Curious Mathematician 2025, ICTS-TIFR, Bangalore</span>
+        <span class="ticker-sep">◆</span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item"><strong>May 2025</strong> — Journal paper published: "A Mechanically Verified Garbage Collector for OCaml", Journal of Automated Reasoning, Springer</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>2025</strong> — Session Chair &amp; Official Reviewer, OCaml Workshop 2025, ICFP/SPLASH, Singapore</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>2024</strong> — MSR Mainline Contributor: AVL Tree library in Pulse merged into official Microsoft Research repository</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>Jun–Aug 2024</strong> — Research Intern at Microsoft Research Bangalore: SPDM protocol verification in Pulse/Separation Logic</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item"><strong>Apr 2025</strong> — Workshop participant: Lean for the Curious Mathematician 2025, ICTS-TIFR, Bangalore</span>
+        <span class="ticker-sep">◆</span>
+      </div>
+    </div>
+  </div>
 
-  <section>
+  <section class="fade-section">
     <h2>Research Interests</h2>
     <div class="tags">
       <span class="tag">Mechanized Formal Verification</span>
@@ -147,24 +190,33 @@
     </div>
   </section>
 
-  <section>
+  <section class="fade-section">
     <h2>Key Credentials</h2>
     <div class="card">
       <div class="card-title">PhD, Computer Science &amp; Engineering</div>
       <div class="card-meta">IIT Madras (NIRF Rank 1) · 2020–Present · CGPA 8.5/10</div>
-      <p>Thesis: "A Mechanically Verified Garbage Collector for OCaml" — published in Journal of Automated Reasoning, Springer, May 2025. Developed a verified stop-the-world mark-and-sweep GC in F*/Low*, compiled to C via KaRaMeL, integrated with the OCaml runtime.</p>
+      <p>Thesis: "A Mechanically Verified Garbage Collector for OCaml" — published in Journal of Automated Reasoning, Springer, May 2025.</p>
     </div>
     <div class="card">
       <div class="card-title">GATE 2009 — All India Rank 550</div>
       <div class="card-meta">98.67 percentile · Computer Science &amp; Engineering</div>
     </div>
     <div class="card">
-      <div class="card-title">5+ Years Industrial Experience</div>
+      <div class="card-title">5+ Years Industrial Experience — Intel</div>
       <div class="card-meta">Intel Technology India Pvt. Ltd. · Bangalore · 2011–2016</div>
-      <p>Post-Silicon functional validation lead for Intel's first low-power mobile GPU platform. Owned Power Conservation and Video Post Processing components of Intel's Broadwell Graphics Driver.</p>
+      <p>Post-Silicon functional validation lead for Intel's first low-power mobile GPU platform.</p>
     </div>
   </section>
 
 </main>
+
+<script>
+  // Scroll-triggered fade-in for sections
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-section').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
