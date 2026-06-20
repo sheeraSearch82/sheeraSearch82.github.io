@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advising | Your Name</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --gray: #95a5a6;
+    }
+
+    body {
+      font-family: 'PT Serif', serif;
+      color: var(--dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      transition: transform 0.3s ease;
+    }
+
+    a {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100vh;
+      background: var(--primary);
+      color: white;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-item {
+      padding: 1.5rem;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav-item {
+      display: block;
+      padding: 0.8rem 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .sidebar-nav-item:hover,
+    .sidebar-nav-item.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 101;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    .wrap {
+      transition: transform 0.3s ease;
+      padding: 3rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    body.sidebar-open {
+      overflow-x: hidden;
+    }
+    body.sidebar-open .sidebar {
+      transform: translateX(260px);
+    }
+    body.sidebar-open .wrap {
+      transform: translateX(260px);
+    }
+    body.sidebar-open .sidebar-toggle {
+      left: 270px;
+    }
+
+    .section-title {
+      margin-top: 2.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .advise-entry {
+      margin-bottom: 2rem;
+    }
+
+    .advise-entry h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .advise-entry p {
+      margin: 0.3rem 0;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 3rem 1.5rem;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700|PT+Sans:400,400i,700" rel="stylesheet">
+</head>
+
+<body>
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+  <div class="sidebar">
+    <div class="sidebar-item">
+      <p>Your Name</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">About</a>
+      <a class="sidebar-nav-item" href="/publications.html">Publications</a>
+      <a class="sidebar-nav-item" href="/teaching.html">Teaching</a>
+      <a class="sidebar-nav-item active" href="/advising.html">Advising</a>
+      <a class="sidebar-nav-item" href="/blog.html">Blog</a>
+      <a class="sidebar-nav-item" href="/talks.html">Talks</a>
+      <a class="sidebar-nav-item" href="/calendar.html">Calendar</a>
+      <a class="sidebar-nav-item" href="/books.html">Books</a>
+    </nav>
+    <div class="sidebar-item">
+      <p>&copy; 2023 Your Name</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="masthead">
+      <h1>Your Name <small>Professor of Computer Science</small></h1>
+    </div>
+
+    <div class="content">
+      <h1 class="section-title">Advising</h1>
+
+      <div class="advise-entry">
+        <h3>Ph.D. Students</h3>
+        <p><strong>John Doe</strong> (2021–present) - Machine Learning on Graphs</p>
+        <p><strong>Jane Smith</strong> (2020–present) - NLP and Healthcare</p>
+      </div>
+
+      <div class="advise-entry">
+        <h3>Masters Students</h3>
+        <p><strong>Michael Johnson</strong> (2023) - Fairness in AI Systems</p>
+        <p><strong>Emily Davis</strong> (2022) - Reinforcement Learning for Robotics</p>
+      </div>
+
+      <div class="advise-entry">
+        <h3>Undergraduate Projects</h3>
+        <p><strong>Samantha Lee</strong> - AI-assisted Tutoring Platform</p>
+        <p><strong>Kevin Brown</strong> - Web-based Visualizer for Sorting Algorithms</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-open');
+
+      if (document.body.classList.contains('sidebar-open')) {
+        document.addEventListener('click', closeSidebarOutside);
+      } else {
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    }
+
+    function closeSidebarOutside(event) {
+      const sidebar = document.querySelector('.sidebar');
+      const toggle = document.querySelector('.sidebar-toggle');
+
+      if (!sidebar.contains(event.target) && event.target !== toggle) {
+        document.body.classList.remove('sidebar-open');
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+        document.body.classList.remove('sidebar-open');
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    });
+  </script>
+</body>
+</html>

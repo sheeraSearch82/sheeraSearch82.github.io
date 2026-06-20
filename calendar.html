@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Your Name | Professional Title</title>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a365d;
+      --blue: #2c5282;
+      --light-blue: #4299e1;
+      --gray: #4a5568;
+      --light-gray: #e2e8f0;
+      --white: #ffffff;
+      --off-white: #f7fafc;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      color: var(--gray);
+      background-color: var(--off-white);
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--light-blue);
+      text-decoration: underline;
+    }
+
+    h1, h2 {
+      color: var(--navy);
+      margin-top: 1.5em;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      border-bottom: 1px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: -260px;
+      background-color: var(--navy);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      color: var(--white);
+      font-size: 1.3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav-item {
+      padding: 0.8rem 1.5rem;
+      color: rgba(255,255,255,0.9);
+      display: block;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-nav-item:hover {
+      background-color: rgba(255,255,255,0.05);
+      border-left: 3px solid var(--light-blue);
+      color: var(--white);
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 0.8rem;
+      cursor: pointer;
+      z-index: 1100;
+      font-size: 1.2rem;
+    }
+
+    .sidebar-toggle:hover {
+      background-color: var(--blue);
+    }
+
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem 4rem;
+      transition: all 0.3s ease;
+    }
+
+    body.sidebar-open {
+      margin-left: 260px;
+    }
+
+    body.sidebar-open .sidebar {
+      left: 0;
+    }
+
+    body.sidebar-open .main-content {
+      transform: translateX(80px);
+    }
+
+    .profile-text {
+      flex: 1;
+    }
+
+
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 3rem 1.5rem;
+      }
+
+
+      body.sidebar-open .main-content {
+        transform: translateX(40px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <div class="sidebar-header">Dr. Your Name</div>
+    <ul class="sidebar-nav">
+      <li><a href="/" class="sidebar-nav-item">About</a></li>
+      <li><a href="publications.html" class="sidebar-nav-item">Publications</a></li>
+      <li><a href="teaching.html" class="sidebar-nav-item">Teaching</a></li>
+      <li><a href="advising.html" class="sidebar-nav-item">Advising</a></li>
+      <li><a href="talks.html" class="sidebar-nav-item">Talks</a></li>
+      <li><a href="blog.html" class="sidebar-nav-item">Blog</a></li>
+      <li><a href="calendar.html" class="sidebar-nav-item">Calendar</a></li>
+      <li><a href="books.html" class="sidebar-nav-item">Books</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      &copy; 2023 Dr. Your Name
+    </div>
+  </nav>
+
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+  <main class="main-content">
+    <div class="profile-section">
+      <div class="profile-text">
+        <h1>Dr. Your Name</h1>
+        <p><strong>Associate Professor of Computer Science</strong><br>
+
+    <h2>My Calendar</h2>
+    <section style="background: var(--white); padding: 2rem; border: 1px solid var(--light-gray); border-radius: 8px;">
+      <iframe 
+        src="https://calendar.google.com/calendar/embed?src=your_email%40gmail.com&ctz=Asia%2FKolkata"
+        style="border: none; width: 100%; height: 600px;" 
+        frameborder="0" 
+        scrolling="no">
+      </iframe>
+    </section>
+
+
+  </main>
+
+  <script>
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-open');
+      if (document.body.classList.contains('sidebar-open')) {
+        document.addEventListener('click', closeSidebarOutside);
+      } else {
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    }
+
+    function closeSidebarOutside(event) {
+      const sidebar = document.querySelector('.sidebar');
+      const toggleBtn = document.querySelector('.sidebar-toggle');
+      if (!sidebar.contains(event.target) && event.target !== toggleBtn) {
+        document.body.classList.remove('sidebar-open');
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+        document.body.classList.remove('sidebar-open');
+        document.removeEventListener('click', closeSidebarOutside);
+      }
+    });
+  </script>
+</body>
+</html>

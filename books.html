@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books | Your Name</title>
+  <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --gray: #95a5a6;
+    }
+
+    body {
+      font-family: 'PT Serif', serif;
+      color: var(--dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      transition: transform 0.3s ease;
+    }
+
+    a {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100vh;
+      background: var(--primary);
+      color: white;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-item {
+      padding: 1.5rem;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav-item {
+      display: block;
+      padding: 0.8rem 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .sidebar-nav-item:hover,
+    .sidebar-nav-item.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 101;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    .wrap {
+      transition: transform 0.3s ease;
+      padding: 3rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    body.sidebar-open {
+      overflow-x: hidden;
+    }
+
+    body.sidebar-open .sidebar {
+      transform: translateX(260px);
+    }
+
+    body.sidebar-open .wrap {
+      transform: translateX(260px);
+    }
+
+    body.sidebar-open .sidebar-toggle {
+      left: 270px;
+    }
+
+    .section-title {
+      margin-top: 2.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--light);
+    }
+
+    ul li {
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 3rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="sidebar">
+    <div class="sidebar-item">
+      <p>Your Name</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">About</a>
+      <a class="sidebar-nav-item" href="publications.html">Publications</a>
+      <a class="sidebar-nav-item" href="teaching.html">Teaching</a>
+      <a class="sidebar-nav-item" href="advising.html">Advising</a>
+      <a class="sidebar-nav-item" href="blog.html">Blog</a>
+      <a class="sidebar-nav-item" href="talks.html">Talks</a>
+      <a class="sidebar-nav-item" href="calendar.html">Calendar</a>
+      <a class="sidebar-nav-item" href="books.html">Books</a>
+    </nav>
+    <div class="sidebar-item">
+      <p>&copy; 2025 Your Name</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="masthead">
+      <h1>Your Name</h1>
+    </div>
+    <div class="content">
+      <h1 class="section-title">Books</h1>
+
+      <h2>Currently reading</h2>
+      <ul>
+        <li><a href="https://www.amazon.in/Brave-New-Words-Revolutionize-Education-ebook/dp/B0CFPW1PN2">Brave New Worlds</a></li>
+      </ul>
+
+      <h3>Stalled</h3>
+      <ul>
+        <li><a href="https://amzn.in/d/18u6rFE">Accelerating India’s Development</a></li>
+        <li><a href="https://amzn.in/d/f5gdNbJ">Good Strategy, Bad Strategy</a></li>
+        <li><a href="https://amzn.in/d/iKsKJfO">Leaders Eat Last</a></li>
+      </ul>
+
+      <h2>Read</h2>
+      <ul>
+        <li><a href="https://www.amazon.in/Witches-Jeyamohan-Translated-Sangheetha-Puthiyedath/dp/9353453437">Of men, women and witches</a> – ⭐⭐⭐⭐</li>
+        <li><a href="https://www.penguin.co.in/book/i-have-the-streets/">I Have the Streets</a> – ⭐⭐⭐⭐</li>
+        <li><a href="https://www.amazon.in/Golden-Road-Ancient-India-Transformed/dp/140886441X">The Golden Road</a> – ⭐⭐⭐</li>
+        <li><a href="https://en.m.wikipedia.org/wiki/What_I_Talk_About_When_I_Talk_About_Running">What I Talk About When I Talk About Running</a> – ⭐⭐⭐⭐</li>
+        <li><a href="https://www.amazon.in/Psychology-Money-Morgan-Housel/dp/9390166268">The Psychology of Money</a> – ⭐⭐⭐⭐</li>
+        <li><a href="https://www.vishnupurampublications.com/product/hindugnanamarabilaarudharisanangalvp/">இந்து ஞான மரபில் ஆறு தரிசனங்கள்</a> – ⭐⭐⭐⭐⭐</li>
+        <li><a href="https://www.vishnupurampublications.com/product/thanmeetchi/">தன்மீட்சி – தன்னறம்</a> – ⭐⭐⭐⭐⭐</li>
+        <li><a href="https://www.vishnupurampublications.com/product/aalamnovel/">ஆலம்</a> – ⭐⭐⭐</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-open');
+    }
+  </script>
+</body>
+
+</html>
