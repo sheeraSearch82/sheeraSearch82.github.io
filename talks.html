@@ -24,10 +24,30 @@
   <div class="page-header"><h1>News &amp; Updates</h1></div>
   <section>
     <h2>2026</h2>
+    <div class="news-item" style="flex-direction:column;align-items:flex-start;gap:0.8rem;">
+      <div style="display:flex;gap:1rem;width:100%">
+        <div class="news-date" style="padding-top:0.1rem">Jun 2026</div>
+        <div>
+          <strong>🎓 PhD Defence — Successfully Defended</strong><br>
+          <span style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;display:block;margin-top:0.3rem;">
+            Successfully defended the PhD thesis <strong>"A Mechanically Verified Garbage Collector for OCaml"</strong> on <strong>30 June 2026</strong>, Department of Computer Science and Engineering, IIT Madras. About 39,000 lines of proof in F*/Low*, compiled to real C code via KaRaMeL, running inside the actual OCaml 4.14.1 runtime — a machine-checked guarantee that the collector never frees memory that is still in use.
+            <br><br>
+            The verified core is already being used by the F* team to train LLMs toward generating more sophisticated GCs through agentic, proof-oriented programming, aiming at a true drop-in replacement using F* and Pulse, and eventually OCaml 5's multicore collector.
+            <br><br>
+            <em>Advisors: <a href="https://kcsrk.info/" target="_blank">Dr. KC Sivaramakrishnan</a> &amp; <a href="https://kartiknagar.github.io/" target="_blank">Dr. Kartik Nagar</a>, IIT Madras. External examiner: <a href="https://www.microsoft.com/en-us/research/people/aseemr/" target="_blank">Aseem Rastogi</a>, MSR Bangalore.</em>
+            <br><br>
+            Published open access in the <a href="https://link.springer.com/article/10.1007/s10817-025-09721-0" target="_blank">Journal of Automated Reasoning, Springer, 2025</a>.
+          </span>
+        </div>
+      </div>
+      <img src="defence.jpg" alt="PhD Viva Voce — Sheera Shamsu with Dr. KC Sivaramakrishnan, IIT Madras, 30 June 2026"
+        style="width:100%;max-width:640px;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.12);margin-left:calc(90px + 1rem);">
+    </div>
+
     <div class="news-item">
       <div class="news-date">Apr 2026</div>
       <div>
-        <strong>New MSR Collaboration — <a href="https://github.com/FStarLang/pulse-verified-gc" target="_blank">pulse-verified-gc</a></strong> (Microsoft Research · F*/Pulse)<br>
+        <strong>Collaboration with the F* Language Team — <a href="https://github.com/FStarLang/pulse-verified-gc" target="_blank">pulse-verified-gc</a></strong> (F* Team, Microsoft Research · F*/Pulse)<br>
         <span style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;display:block;margin-top:0.3rem;">
           A verified generational garbage collector for OCaml 4.14, specified in F* and implemented in Pulse. The repository contains shared OCaml heap/object infrastructure, a verified major-heap allocator, a bounded-stack mark-and-sweep major collector, a generational collector with Cheney-style minor collection, SPOT contract audits, KaRaMeL extraction to C, and an OCaml bytecode runtime integration. The active F*/Pulse tree contains <strong>223 .fst/.fsti files and ~104k lines of source</strong>. Active development is organised around dependency-scanned builds; <code>make generational</code> checks the common, mark-and-sweep, generational, and SPOT sources. For the detailed design, proof architecture, public contracts, OCaml bridge layout, benchmark table, and current verification boundary, see <code>DESIGN_AND_IMPL.md</code>.
         </span>
