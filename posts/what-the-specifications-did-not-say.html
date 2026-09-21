@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>What the Specifications Did Not Say — Sheera Shamsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_layout.css"/>
+  <link rel="stylesheet" href="../_post.css"/>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-top"><div class="name">Sheera Shamsu</div><div class="role">Expertise in Formal Verification of Critical Software<br>Assistant Professor, TKM College</div></div>
+  <nav>
+    <a href="../index.html">About</a>
+    <a href="../publications.html">Publications &amp; Talks</a>
+    <a href="../teaching.html">Teaching</a>
+    <a href="../videos.html">Videos</a>
+    <a href="../blog.html" class="active">Blog</a>
+    <a href="../talks.html">News</a>
+    <a href="../teaching.html#students">Students</a>
+  </nav>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/team/" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
+</aside>
+<main class="main">
+  <div class="page-header"><h1>What the Specifications Did Not Say</h1></div>
+  <div class="post-meta">September 2026 · with thanks to Nik Swamy, KC Sivaramakrishnan, and the F* team</div>
+  <article class="post">
+    <p><a href="https://risemsr.github.io/blog/2026-08-21-gc/">Nik wrote recently</a> about how the mark-and-sweep collector from my thesis became a verified generational GC for OCaml. He said auditing specifications was the main bottleneck.</p>
+    <p>This is what that looked like from my side.</p>
+    <p>Nothing below is a bug in the code. They are gaps in specifications. Usually the code is fine and the proof covers less than the code handles.</p>
+    <h2>Where to begin</h2>
+    <p>I have written F* proofs by hand for years. A development I wrote myself, I can navigate. This one was mostly LLM-generated and much bigger than anything I had read before. I had no idea what to read first.</p>
+    <p>What worked was starting at the end-to-end theorem and going down. Take a property. Find where it is stated. Ask what establishes its preconditions. Follow that until you hit the top or run out of callers.</p>
+    <p>That is when the gaps show. A proof tells you the conclusion follows from the hypotheses. It says nothing about whether those hypotheses describe the heaps you care about.</p>
+    <figure><img src="../figures/proof-scope.png" alt="Two circles. The outer one is the heaps OCaml produces. The inner one is the heaps the specification covers. Zero-size objects and infix pointers sit in the ring between them."/></figure>
+    <p>The picture is the whole post. The heaps the specification talks about are a subset of the heaps OCaml produces, and everything below lives in the ring between the two.</p>
+    <h2>The free list</h2>
+    <p><code>GC.Spec.FreeList.Sweep</code> proves that sweeping preserves free-list exactness. Clean proof, no admits. It requires <code>linkable_heap</code>: every object has room for a link word.</p>
+    <p><code>linkable_heap</code> appears nowhere in <code>GC.Spec.Correctness</code> or <code>GC.Impl</code>. And <code>well_formed_heap</code> does not imply it.</p>
+    <p>So the property holds, and nothing establishes the condition it holds under.</p>
+    <p><code>fl_exact</code> says the free list holds exactly the blue blocks: everything on the list is free, and every free block is on the list. It is the property the whole free-list development is built to establish. And it is not referenced from the correctness statement either. The four pillars of <code>full_gc_correctness</code> say nothing about the free list at all.</p>
+    <p>Neither is a soundness problem. Both are worth knowing.</p>
+    <h2>The one-word block</h2>
+    <p><code>linkable_heap</code> forbids objects of size zero. OCaml has them. So I went to see what would happen if one appeared.</p>
+    <p>Here is our <code>sweep_object</code>, white branch:</p>
+    <pre class="lang-fstar"><code>let g&#x27; =
+  if U64.v ws &gt; 0 &amp;&amp; U64.v hd + U64.v mword * 2 &lt;= heap_size then
+    HeapGraph.set_field g obj 1UL fp
+  else g
+in
+let g&#x27;&#x27; = makeBlue obj g&#x27; in
+(g&#x27;&#x27;, obj)</code></pre>
+    <p>A zero-size white object takes the <code>else g</code> branch, so no link is written. But <code>makeBlue</code> is outside the guard, and the object is returned as the new free pointer either way. So the head of the list has no successor.</p>
+    <p>Worse than that. The link from one free block to the next is stored in the block&#x27;s first field, and <code>fl_next</code> reads it from the block&#x27;s own address. For a zero-size object there is no first field, so that address holds the <em>next object&#x27;s header</em>. Following the list would read a header as if it were a pointer.</p>
+    <p>Then I checked stock OCaml. I nearly skipped that.</p>
+    <p>OCaml 4.14 defaults to the best-fit policy, and <code>bf_merge_block</code> in <code>runtime/freelist.c</code> is the closest thing there to our pass. It does what ours does: walk a run of adjacent free blocks, then write one header at the end.</p>
+    <p>Here is that end, after any oversized pieces have been split off, with <code>wosz</code> the wosize of what remains:</p>
+    <pre class="lang-c"><code>if (wosz &gt; 0){
+  Hd_val (start) = Make_header (wosz, 0, Caml_blue);
+  bf_insert_sweep (start);
+}else{
+  Hd_val (start) = Make_header (0, 0, Caml_white);
+  caml_fl_cur_wsz -= Whsize_wosize (0);
+}</code></pre>
+    <p>The <code>wosz &gt; 0</code> test is the whole thing. If the remainder has at least one field, it gets a blue header and is inserted into the free list. If it is a single word, a header and nothing else, it gets a white header and is not inserted. OCaml calls these fragments.</p>
+    <p>Next-fit and first-fit handle it one block at a time instead, with a comment that says the intent plainly: &quot;This is a fragment. Leave it in white but remember it for eventual merging with the next block.&quot; The fragment stays white and is absorbed later, when a new header written at its address covers it and the block above.</p>
+    <p>So in every policy, a fragment is never blue and never a list cell.</p>
+    <p>That matters because of free-list completeness: every blue block is on the free list. A fragment could not be on the list, having no field to hold a link. Keeping it white means completeness never has to account for it.</p>
+    <p>That changed the finding. A zero-size block does not break anything.</p>
+    <p>Both implementations perform the same test, and do different things with the answer.</p>
+    <p>OCaml asks <code>wosz &gt; 0</code> to decide the block&#x27;s <em>colour</em>. A zero-size block stays white, so it is not a free block at all, and completeness has nothing to say about it.</p>
+    <p>Ours asks the same question to decide only whether to <em>write the link</em>. The colour is set outside that branch, so a zero-size block turns blue either way. Blue means free, free means it should be on the list, and it cannot be on the list. That is exactly what completeness forbids.</p>
+    <p>OCaml rules the case out by construction. We rule it out by hypothesis, and then never establish the hypothesis.</p>
+    <h2>Then I read the extracted C</h2>
+    <p>At this point I thought I had found a hazard in the collector. I had not. I had found it in the specification, and the two are not the same thing.</p>
+    <p><code>fused_sweep_coalesce</code> is what actually runs, and it does not sweep object by object. It walks a run. Black objects are recoloured white and end the run. Everything else extends it, white and blue alike. No individual block is ever linked, so there is no link write to skip and no zero-size block left as a dangling head.</p>
+    <p>So the hazard I had described does not arise in the code at all.</p>
+    <p>That left a question. If the implementation does not do what <code>sweep_object</code> does, how are the two connected? Through <code>fused_eq_sweep_coalesce</code>:</p>
+    <pre class="lang-fstar"><code>fused_sweep_coalesce g == coalesce (fst (sweep g fp))</code></pre>
+    <p>The <code>fst</code> is the answer. Sweep&#x27;s free pointer is discarded, and coalesce rebuilds the list from <code>0UL</code>. So <code>sweep_object</code>&#x27;s divergence is real, and the composition hides it. The specification is wrong about a step whose output nothing downstream reads.</p>
+    <p>Three readings. The first said the code was broken. The second said the specification was. The third said the specification is wrong in a place that does not reach the code. Only the third was right.</p>
+    <h2>Infix pointers</h2>
+    <p>This one was a real coverage gap.</p>
+    <p><code>well_formed_heap_part2</code> requires every pointer field to target an object of the heap. Infix objects are the interior closures OCaml uses for mutually recursive functions. They are never in the object list, because the walk steps by <code>wosize</code> and skips over them inside their parent.</p>
+    <p>So a heap with a field pointing at an infix object cannot satisfy <code>well_formed_heap</code>. OCaml produces such heaps all the time.</p>
+    <p>The machinery existed. <code>resolve_object</code> maps an infix object to its parent, and leaves anything else unchanged. Mark calls it on every field target. But the proof only ever gives it targets from the object list, and infix objects are never in that list. So it always returns the target unchanged. The call does nothing the proof can see.</p>
+    <p><a href="https://fplaunchpad.org/team/">Akhil Tulluri</a> found the same thing from the other side, by running <code>make coldstart</code> and watching it die on <code>camlinternalFormat.ml</code>. That file is full of mutually recursive functions.</p>
+    <p>It has since been fixed upstream.</p>
+    <p>That pairing is the lesson. Reading specifications finds inconsistencies. Running the collector finds heaps your specification quietly excludes. An audit could find those too, in principle. Running the thing is just much faster.</p>
+    <h2>What is still missing</h2>
+    <p>Every lemma about <code>alloc_spec</code> is a preservation property. Several take <code>obj_out &lt;&gt; 0UL</code> as a hypothesis rather than a conclusion. So if allocation returns a block, the block is sound. Nothing says it returns one when a suitable block exists.</p>
+    <p>A collector that stranded every free block would satisfy all of them. It would report out of memory forever.</p>
+    <p>Free-list completeness would give the progress property. Sweep&#x27;s half is proven. The coalescing half is what I am working on now.</p>
+    <p>That half is harder. Coalescing removes objects. Absorbed blocks stop being objects, and one merged block takes their place. It also defers linking, so mid-walk there are blue objects on neither list.</p>
+    <p>There is also no heap conservation invariant. Nothing says total heap equals allocated plus free plus overhead. And nothing says coalescing leaves no two adjacent free blocks, which is the entire point of the pass.</p>
+    <p>The specification says what coalescing preserves, not what it achieves.</p>
+    <h2>What I would tell someone starting</h2>
+    <p>Read the analogous proof before writing your own. I spent a long time proving an address-ordering property before finding <code>GC.Spec.Coalesce.Descending</code>, which had done it already, and better.</p>
+    <p>Check that your hypotheses are satisfiable. Replace the body with <code>()</code> and the conclusion with <code>False</code>. If that typechecks, the hypotheses are contradictory and the lemma says nothing. An <code>admit</code> in the body makes the test meaningless. I found that out by doing it.</p>
+    <p>When a property requires a condition, find out who establishes it. That one question turned up most of this post.</p>
+    <p>And write down what each part of the specification means, in your own words. Nik says the same. I would say it more strongly. Several times I thought I understood an invariant. Then when I asked myself which heaps it allowed, I had no answer. Only then did I go and work it out.</p>
+  </article>
+  <p class="post-back"><a href="../blog.html">&larr; Back to blog</a></p>
+</main>
+</body>
+</html>
