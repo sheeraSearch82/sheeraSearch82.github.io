@@ -12,7 +12,8 @@
     .intro h1 { font-size: 2.15rem; font-weight: 300; line-height: 1.3; letter-spacing: -0.005em; margin-bottom: 1.4rem; }
     .intro p { color: var(--ink); }
     .portrait { width: 96px; height: 120px; object-fit: cover; object-position: center top; border-radius: 2px; filter: saturate(0.85); margin-top: 0.5rem; }
-    .epigraph { margin: 0 0 4rem; padding-left: 1.4rem; border-left: 1px solid var(--hair); font-style: italic; color: var(--soft); font-size: 1.02rem; line-height: 1.7; }
+    .epigraph { margin: 0 0 1.8rem; padding-left: 1.4rem; border-left: 1px solid var(--hair); font-style: italic; color: var(--soft); font-size: 1.02rem; line-height: 1.7; }
+    .epigraph cite a { color: inherit; }
     .epigraph cite { display: block; font-style: normal; font-size: 0.9rem; margin-top: 0.5rem; }
     .more { font-size: 0.95rem; }
     .contact { color: var(--soft); }
@@ -53,7 +54,12 @@
     <cite>John McCarthy, 1963</cite>
   </blockquote>
 
-  <section>
+  <blockquote class="epigraph">
+    The precision of formal verification counteracts the imprecise and probabilistic nature of LLMs.
+    <cite><a href="https://martin.kleppmann.com/2025/12/08/ai-formal-verification.html" target="_blank">Martin Kleppmann, 2025</a></cite>
+  </blockquote>
+
+  <section style="margin-top:4rem">
     <h2>Recently</h2>
     <div class="news-item"><div class="news-date">Jul 2026</div><div>PhD conferred at the 63rd Convocation of IIT Madras.</div></div>
     <div class="news-item"><div class="news-date">Jun 2026</div><div>Defended my thesis, <a href="Sheera_Shamsu_PhD_Thesis.pdf" target="_blank">A Mechanically Verified Garbage Collector for OCaml</a>.</div></div>
