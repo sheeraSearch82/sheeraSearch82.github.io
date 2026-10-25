@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OCaml Closures, Simply Explained — Sheera Shamsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_layout.css"/>
+  <link rel="stylesheet" href="../_post.css"/>
+  <style>
+    .post table { border-collapse: collapse; margin: 1.2rem 0; font-size: 0.86rem; width: 100%; }
+    .post th, .post td { border: 1px solid var(--grey-mid); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
+    .post th { background: var(--grey-light); color: var(--navy); }
+    .post .table-wrap { overflow-x: auto; }
+  </style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-top"><div class="name">Sheera Shamsu</div><div class="role">Expertise in Formal Verification of Critical Software<br>Assistant Professor, TKM College</div></div>
+  <nav>
+    <a href="../index.html">About</a>
+    <a href="../publications.html">Publications &amp; Talks</a>
+    <a href="../teaching.html">Teaching</a>
+    <a href="../videos.html">Videos</a>
+    <a href="../blog.html" class="active">Blog</a>
+    <a href="../talks.html">News</a>
+    <a href="../teaching.html#students">Students</a>
+  </nav>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/about/#team" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
+</aside>
+<main class="main">
+  <div class="page-header"><h1>OCaml Closures, Simply Explained</h1></div>
+  <div class="post-meta">October 2026</div>
+  <article class="post">
+    <h2>The big idea</h2>
+    <p>A closure is a function plus the variables it remembers. OCaml stores it as one heap block. The GC must find every pointer in that block.</p>
+    <p>The BNF gives the layout, top to bottom:</p>
+    <pre><code>closure      ::= entrypoint (infix-header entrypoint)* value*
+entrypoint   ::= code-pointer closure-info                  // arity = 1
+               | code-pointer closure-info code-pointer     // arity &gt; 1
+closure-info ::= arity [8 bits]
+               · start-of-environment [wordsize − 9 bits]
+               · 1</code></pre>
+    <p>So a closure block has three parts:</p>
+    <ol style="margin:0 0 1.1rem 1.4rem;">
+      <li><strong>Entrypoint.</strong> Code pointer(s) plus its own info word. 2 or 3 words, depending on the compiler (see below).</li>
+      <li><strong>Infix header + entrypoint</strong>, zero or more times. Only for mutually recursive functions.</li>
+      <li><strong>Environment</strong> (<code>value*</code>). The captured variables. Heap pointers live only here.</li>
+    </ol>
+    <p>Before all this sits the usual OCaml block header: size and tag (<code>Closure_tag</code> = 247).</p>
+    <p>On a 64-bit machine each word is 8 bytes. In the diagrams, the left number is the word index. The right number is the byte offset from word 0, where the closure pointer points. The header sits just before it, at −8.</p>
+    <p>The info word holds two numbers: the arity and startenv. Startenv says how far ahead the environment begins. Its last bit is 1, so the GC treats it as an integer, not a pointer.</p>
+    <p>The GC’s rule: jump to startenv, scan only from there.</p>
+    <p>Arity is the number of arguments a function takes. The BNF above is the native layout. Bytecode differs a little, as the next section shows.</p>
+
+    <h2>Native vs bytecode</h2>
+    <p>OCaml has two compilers. <code>ocamlopt</code> produces native machine code. <code>ocamlc</code> produces bytecode, which an interpreter runs. They lay out closures a little differently.</p>
+    <p>The reason is partial application, like <code>repeat 2</code> in Example 2:</p>
+    <p><strong>Native:</strong> the caller reads the arity. If the call has exactly that many arguments, it jumps to the total pointer. Otherwise it passes them one at a time through the curried pointer, a helper (<code>caml_curryN</code>) that builds partial closures. So arity 2 or more needs both pointers.</p>
+    <p><strong>Bytecode:</strong> the function itself checks how many arguments arrived (the <code>GRAB</code> instruction), and builds a partial closure if needed. So one code pointer is enough, and the arity field is unused.</p>
+    <div class="table-wrap"><table>
+      <tr><th></th><th>Native (<code>ocamlopt</code>)</th><th>Bytecode (<code>ocamlc</code>)</th></tr>
+      <tr><td>Entrypoint, arity 1</td><td>2 words: code, info</td><td>2 words: code, info</td></tr>
+      <tr><td>Entrypoint, arity ≥ 2</td><td>3 words: curried, info, total</td><td>2 words: code, info</td></tr>
+      <tr><td>Arity field</td><td>the real arity</td><td>always 0</td></tr>
+      <tr><td>Infix offsets</td><td>depend on the arities</td><td>always 3, 6, 9… words</td></tr>
+      <tr><td>Startenv and the GC rule</td><td>same</td><td>same</td></tr>
+    </table></div>
+    <p>Tupled functions like <code>fun (x, y) -&gt; …</code> store a negative arity (−2) in native code, but still use 3 words.</p>
+    <p>Source: OCaml 4.14.1, <code>asmcomp/cmmgen.ml</code> and <code>asmcomp/cmm_helpers.ml</code> (native), <code>runtime/interp.c</code> (bytecode). Every layout below was checked by compiling the example with both compilers and reading the real block.</p>
+
+    <h2>Example 1: one argument (arity 1)</h2>
+    <pre><code>let make_counter () =
+  let count = ref 0 in
+  fun () -&gt; incr count; !count</code></pre>
+    <p><code>make_counter ()</code> returns a counter. Each call returns 1, 2, 3… The counter takes one argument, <code>()</code>, so its arity is 1. It captures <code>count</code>, a pointer to a ref cell on the heap. The block is 3 words after the header.</p>
+    <figure><img src="../figures/closure-make-counter.svg" alt="Native and bytecode layouts of the make_counter closure side by side. Both have a header, a code pointer at word 0, an info word at word 1, and count at word 2. Native writes arity 1, bytecode writes arity 0. Startenv is 2 in both."/></figure>
+    <p>Both compilers build the same shape. The only difference: bytecode writes arity 0.</p>
+    <p>The environment holds a real heap pointer here. So the GC must scan it and follow <code>count</code> to the ref cell.</p>
+
+    <h2>Example 2: two arguments (arity 2)</h2>
+    <pre><code>let make_multiplier factor =
+  let rec repeat x n =
+    if n = 0 then 0 else factor * x + repeat x (n - 1)
+  in
+  repeat</code></pre>
+    <p><code>make_multiplier 3</code> returns <code>repeat</code>, with factor = 3 captured. So <code>repeat 2 4</code> = 24.</p>
+    <figure><img src="../figures/closure-make-multiplier.svg" alt="Native layout has four words: curried pointer, info with arity 2 and startenv 3, total pointer, and factor. Bytecode has three words: code pointer, info with arity 0 and startenv 2, and factor."/></figure>
+    <p>Arity 2 means <code>repeat</code> can be called in two ways:</p>
+    <ul style="margin:0 0 1.1rem 1.4rem;">
+      <li><strong>All at once:</strong> <code>repeat 2 4</code> returns 24.</li>
+      <li><strong>One at a time (curried):</strong> <code>repeat 2</code> returns a new function that waits for <code>n</code>.</li>
+    </ul>
+    <p><strong>Native</strong> keeps a pointer for each way. The curried pointer goes to the helper that builds the partial closure. The total pointer goes straight to the body. So the entrypoint is 3 words, and startenv = 3.</p>
+    <p><strong>Bytecode</strong> keeps one code pointer. The function handles partial calls itself. So the block is one word shorter, and startenv = 2.</p>
+
+    <h2>Example 3: two functions in one block (infix)</h2>
+    <pre><code>let make_checker () =
+  let limit = Random.int 100 in
+  let rec even n = n = 0 || (n &gt; 0 &amp;&amp; n &lt;= limit &amp;&amp; odd (n - 1))
+  and odd n = n &gt; 0 &amp;&amp; n &lt;= limit &amp;&amp; even (n - 1)
+  in
+  even</code></pre>
+    <p><code>even</code> and <code>odd</code> call each other. Both use the same <code>limit</code>. OCaml puts both in one block, with one copy of <code>limit</code>.</p>
+    <figure><img src="../figures/closure-make-checker.svg" alt="One block of six words. Words 0 and 1 are even's entrypoint. Word 2 is an infix header with offset 3. Words 3 and 4 are odd's entrypoint. Word 5 is the shared limit. An arrow from word 3 back to word 0 shows the infix offset. Even's startenv is 5 and odd's is 2; both reach word 5."/></figure>
+    <ul style="margin:0 0 1.1rem 1.4rem;">
+      <li><strong>Infix header (word 2).</strong> It sits before odd’s entrypoint. It stores the distance back to word 0: 3 words (24 bytes).</li>
+      <li><strong>A pointer to odd</strong> lands on word 3, mid-block. The GC subtracts 3 words, reaches word 0, and marks the whole block. It never marks the infix part alone.</li>
+      <li><strong>Two startenvs, one environment.</strong> Each is counted from its own entrypoint. Even: 5 − 0 = 5. Odd: 5 − 3 = 2. Both reach word 5.</li>
+    </ul>
+    <p>Both functions have arity 1, so native and bytecode match here. Bytecode only writes arity 0 in both info words. The next example shows what changes when arities differ.</p>
+
+    <h2>Example 4: mixed arities (native vs bytecode)</h2>
+    <pre><code>let make_pair k =
+  let rec f x y = if x = 0 then y + k else g (x - 1) + y
+  and g x = f x k
+  in
+  f</code></pre>
+    <p><code>f</code> has arity 2 and <code>g</code> has arity 1. Both share <code>k</code>. Here <code>make_pair 2</code> builds the block.</p>
+    <figure><img src="../figures/closure-make-pair.svg" alt="Native layout has seven words: f's three-word entrypoint, an infix header at word 3 with offset 4, g's entrypoint at words 4 and 5, and k at word 6. Bytecode has six words: f's two-word entrypoint, an infix header at word 2 with offset 3, g's entrypoint at words 3 and 4, and k at word 5."/></figure>
+    <ul style="margin:0 0 1.1rem 1.4rem;">
+      <li><strong>Native:</strong> f’s entrypoint is 3 words. So the infix header lands at word 3, and g starts 4 words from the block start.</li>
+      <li><strong>Bytecode:</strong> every entrypoint is 2 words. So infix offsets are always 3, 6, 9… words.</li>
+    </ul>
+    <p>The GC works the same either way. It reads whatever offset the infix header holds.</p>
+
+    <h2>Cheat sheet</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Word</th><th>What the GC does</th></tr>
+      <tr><td>Header</td><td>Reads the size and tag.</td></tr>
+      <tr><td>Code pointer</td><td>Skips it. It points to code, not the heap.</td></tr>
+      <tr><td>Info word</td><td>Reads startenv. Last bit is 1, so never followed.</td></tr>
+      <tr><td>Infix header</td><td>Uses its offset to find the block start. Never marked alone.</td></tr>
+      <tr><td>Environment</td><td>Scans it. Only these words can hold heap pointers.</td></tr>
+    </table></div>
+    <p>In one line: the compiler and arity set the entrypoint size (2 or 3 words), startenv skips it, and the infix offset leads back to the parent block.</p>
+  </article>
+  <p class="post-back"><a href="../blog.html">&larr; Back to blog</a></p>
+</main>
+</body>
+</html>

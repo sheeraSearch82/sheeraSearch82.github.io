@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 358" font-family="Inter, 'Segoe UI', Arial, sans-serif"><rect width="820" height="358" fill="#fff"/><text x="20" y="26" font-size="13" text-anchor="start" font-weight="700" fill="#1B3A6B">One block holds even and odd; both reach the same limit</text><text x="275.0" y="62" font-size="11" text-anchor="middle" font-weight="400" fill="#666">word</text><text x="544" y="62" font-size="11" text-anchor="end" font-weight="400" fill="#666">byte offset</text><rect x="260" y="70" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="395.0" y="91" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">header: Closure_tag, size 6</text>
+<text x="536" y="91" font-size="11" text-anchor="end" font-weight="400" fill="#666">−8</text>
+<rect x="260" y="104" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="275.0" y="125" font-size="11" text-anchor="middle" font-weight="400" fill="#666">0</text>
+<text x="395.0" y="125" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">even: code pointer</text>
+<text x="536" y="125" font-size="11" text-anchor="end" font-weight="400" fill="#666">+0</text>
+<rect x="260" y="138" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="275.0" y="159" font-size="11" text-anchor="middle" font-weight="400" fill="#666">1</text>
+<text x="395.0" y="159" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">even: info, arity 1, startenv 5</text>
+<text x="536" y="159" font-size="11" text-anchor="end" font-weight="400" fill="#666">+8</text>
+<rect x="260" y="172" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="275.0" y="193" font-size="11" text-anchor="middle" font-weight="400" fill="#666">2</text>
+<text x="395.0" y="193" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">infix header: offset 3 words</text>
+<text x="536" y="193" font-size="11" text-anchor="end" font-weight="400" fill="#666">+16</text>
+<rect x="260" y="206" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="275.0" y="227" font-size="11" text-anchor="middle" font-weight="400" fill="#666">3</text>
+<text x="395.0" y="227" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">odd: code pointer</text>
+<text x="536" y="227" font-size="11" text-anchor="end" font-weight="400" fill="#666">+24</text>
+<rect x="260" y="240" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="275.0" y="261" font-size="11" text-anchor="middle" font-weight="400" fill="#666">4</text>
+<text x="395.0" y="261" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">odd: info, arity 1, startenv 2</text>
+<text x="536" y="261" font-size="11" text-anchor="end" font-weight="400" fill="#666">+32</text>
+<rect x="260" y="274" width="284" height="34" fill="#E8F4F4" stroke="#C8D4E3"/>
+<text x="275.0" y="295" font-size="11" text-anchor="middle" font-weight="400" fill="#666">5</text>
+<text x="395.0" y="295" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">limit (shared)</text>
+<text x="536" y="295" font-size="11" text-anchor="end" font-weight="400" fill="#666">+40</text>
+<rect x="261" y="275" width="282" height="32" fill="none" stroke="#0E7C7B" stroke-width="2"/>
+<path d="M544,223.0 H566 V291.0 H552" fill="none" stroke="#9AA8BA" stroke-width="1.3"/>
+<path d="M545,291.0 l7,-4 l0,8 z" fill="#9AA8BA"/>
+<text x="572" y="261.0" font-size="11" text-anchor="start" font-weight="400" fill="#2E2E2E">odd: 2</text>
+<path d="M544,121.0 H614 V291.0 H552" fill="none" stroke="#9AA8BA" stroke-width="1.3"/>
+<path d="M545,291.0 l7,-4 l0,8 z" fill="#9AA8BA"/>
+<text x="620" y="210.0" font-size="11" text-anchor="start" font-weight="400" fill="#2E2E2E">even: 5</text>
+<path d="M260,223.0 H244 V121.0 H252" fill="none" stroke="#9AA8BA" stroke-width="1.3"/>
+<path d="M259,121.0 l-7,-4 l0,8 z" fill="#9AA8BA"/>
+<text x="238" y="166.0" font-size="11" text-anchor="end" font-weight="400" fill="#2E2E2E">pointer to odd</text>
+<text x="238" y="180.0" font-size="11" text-anchor="end" font-weight="400" fill="#2E2E2E">minus 3 words</text>
+<text x="238" y="194.0" font-size="11" text-anchor="end" font-weight="400" fill="#2E2E2E">= start of block</text><text x="20" y="344" font-size="11" text-anchor="start" font-weight="400" fill="#666">make_checker () · native layout · bytecode is identical except both arities read 0</text></svg>

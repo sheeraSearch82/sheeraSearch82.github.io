@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Part You Cannot Hand Off — Sheera Shamsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_layout.css"/>
+  <link rel="stylesheet" href="../_post.css"/>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-top"><div class="name">Sheera Shamsu</div><div class="role">Expertise in Formal Verification of Critical Software<br>Assistant Professor, TKM College</div></div>
+  <nav>
+    <a href="../index.html">About</a>
+    <a href="../publications.html">Publications &amp; Talks</a>
+    <a href="../teaching.html">Teaching</a>
+    <a href="../videos.html">Videos</a>
+    <a href="../blog.html" class="active">Blog</a>
+    <a href="../talks.html">News</a>
+    <a href="../teaching.html#students">Students</a>
+  </nav>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/about/#team" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
+</aside>
+<main class="main">
+  <div class="page-header"><h1>The Part You Cannot Hand Off</h1></div>
+  <div class="post-meta">September 2026</div>
+  <article class="post">
+    <p>This follows on from <a href="what-the-specifications-did-not-say.html">What the Specifications Did Not Say</a>, which was about auditing specifications I had not written. This one is about a specification I did not write either, and should have.</p>
+    <p>One lemma runs through the whole post. It is called <code>flush_preserves_white</code>, and it says that merging free blocks does not disturb the live ones.</p>
+    <h2>I let something else write the specification</h2>
+    <p>Coalescing removes objects. Absorbed blocks stop being members of the walk, and one merged block stands where several used to. So for the second attempt I wrote down what coalescing preserves, in English.</p>
+    <p>Whole size is wosize plus one, for the header. The total whole size of all blue objects is the same before and after. No two adjacent blue objects remain. And from the end-to-end theorem, coalescing must not touch a white object.</p>
+    <p>Those four sentences are right. I handed them to an assistant and asked for the F*.</p>
+    <h2>What came back</h2>
+    <p>The last sentence became this.</p>
+    <pre class="lang-fstar"><code>val flush_preserves_white (g: heap) (run_end: nat)
+                          (first_blue: U64.t) (run_words: nat) (fp: U64.t)
+  : Lemma
+    (requires run_at first_blue run_words run_end /\ ...)
+    (ensures
+      (let g1 = fst (flush_blue g first_blue run_words fp) in
+       forall (y: obj_addr).
+         Seq.mem y (objects zero_addr g) /\ is_white y g ==&gt;
+         Seq.mem y (objects zero_addr g1) /\ is_white y g1 /\
+         wosize_of_object y g1 == wosize_of_object y g))</code></pre>
+    <p>The conclusion is right. Every white object of <code>g</code> is still a white object after the flush, same size.</p>
+    <p>One piece of vocabulary before the hypothesis. An object&#x27;s header sits one word below the object&#x27;s own address, so <code>hd_address first_blue</code> is the header of the first block in the run. Call it the run&#x27;s floor. The flush writes from the floor upward, for <code>run_words</code> words.</p>
+    <p>Here is <code>run_at</code>.</p>
+    <pre class="lang-fstar"><code>let run_at (first_blue: U64.t) (run_words: nat) (run_end: nat) : prop =
+  run_words &gt; 0 ==&gt;
+    (U64.v first_blue &gt;= U64.v mword /\
+     U64.v first_blue &lt; heap_size /\
+     U64.v first_blue % U64.v mword == 0 /\
+     U64.v first_blue - U64.v mword + run_words * U64.v mword == run_end)</code></pre>
+    <p>A range check, an alignment check, and a sum. Any aligned address in the heap can be <code>first_blue</code>, and any number that makes the sum work can be <code>run_words</code>.</p>
+    <p>Ask the question from the last post. Who establishes this? The caller does, by choosing two numbers that add up. The heap never has to agree that either of them means anything.</p>
+    <h2>The counterexample</h2>
+    <p>So the run can begin and end mid-object.</p>
+    <figure><img src="../figures/fig2-run-across-boundaries.svg" alt="Four objects with their headers shaded. The run&#x27;s floor sits inside B rather than on a header. The flush writes over C&#x27;s header, so the walk jumps from B into the written region and never reaches D."/></figure>
+    <p><code>run_at</code> holds. But the floor is not any block&#x27;s header. It sits part way into B. The flush writes a fresh header there and keeps writing for <code>run_words</code> words, straight over C&#x27;s header.</p>
+    <p>Now run the walk from the bottom. B&#x27;s header sits below the floor, so the flush left it alone. The walk reads it and jumps by B&#x27;s size, which lands exactly where C&#x27;s header used to be. That word is now part of what the flush wrote.</p>
+    <p>From there the walk is reading data as a header. Wherever it goes next, it is not D.</p>
+    <p>D is white. D was an object of <code>g</code>. D is not an object of <code>g1</code>. The conclusion is false.</p>
+    <p>Three lemmas came back with this shape. I caught the first myself. The other two an agent found, with this same counterexample, confirmed against the solver.</p>
+    <h2>The fix</h2>
+    <p>One clause.</p>
+    <pre class="lang-fstar"><code>walk_visits g zero_addr (hd_address (first_blue &lt;: obj_addr))</code></pre>
+    <p><code>walk_visits g s a</code> runs the same steps <code>objects</code> does. Start at <code>s</code>. Read the header. Jump by that many words. Repeat. It asks one thing: does that process land on <code>a</code>?</p>
+    <p>The walk only ever stops at headers. A, then B, then C, then D. Every other address in the heap is passed over, because the walk crosses a whole block in one jump.</p>
+    <p>So the clause says the run&#x27;s floor is a header the walk reaches. Not an aligned address. Not an address in range. A place the walk actually stops.</p>
+    <p>In the picture the floor is part way into B, which the walk jumps over. The hypothesis fails, so that heap is no longer one the lemma claims anything about.</p>
+    <p>The conclusion never changed. Only the set of heaps did.</p>
+    <h2>What I should have done</h2>
+    <p>Written the specification myself.</p>
+    <p>The English was fine. The gap opened in the translation, at the one place I would have had to look anyway: what <code>first_blue</code> and <code>run_words</code> are allowed to be.</p>
+    <p>That is the whole content, not a detail. A specification is a claim about which heaps you mean. A vague hypothesis does not weaken a theorem. It falsifies it.</p>
+    <h2>Why this gap opens here</h2>
+    <p>The object list is not stored anywhere. <code>objects</code> reads a header, takes the size, and jumps that far. So the list is computed from the bytes the collector is writing.</p>
+    <p>One header write changes which objects exist. Merge two blocks and the absorbed one is not deleted. The walk stops landing on it.</p>
+    <p>The walk runs upward, from the lowest address to the highest. So &quot;below&quot; means at a lower address, already visited, and &quot;above&quot; means not reached yet.</p>
+    <p>That is why the proofs do not stay local. Whether D survives is not a question about D. It is a question about every header below it, because those are what the walk read on its way there. Break C&#x27;s header and D is gone, though nothing touched D.</p>
+    <p>Merging is safe: the merged block&#x27;s whole size is the sum of the absorbed ones, so it ends where the last one ended and the walk rejoins. But that argument only starts if the run began on a real boundary. Arithmetic does not give you that.</p>
+    <p>None of this is about F*. Model a heap this way in any prover and the same thing happens.</p>
+    <h2>Non-vacuous, composes, false</h2>
+    <p>Two checks are standard. The vacuity check catches contradictory hypotheses: replace the body with <code>()</code> and the conclusion with <code>False</code>, and it should fail. Checking that a lemma composes at its call site catches a mismatched statement.</p>
+    <p><code>flush_preserves_white</code> passed both.</p>
+    <p>Its hypotheses were satisfiable, so the vacuity probe failed as required. And it composed, because there was only one call site, inside the walk.</p>
+    <p>But the walk knows more than it says. At that point the cursor has just stepped onto an object, so the run&#x27;s floor is a real boundary. The walk never passes that fact to the lemma. The lemma never asks for it. It simply happens to hold.</p>
+    <p>So the lemma was true of every heap it was ever applied to, and false of heaps its own hypotheses permit. Both checks pass. The contract is still wrong.</p>
+    <p>The check that would have caught it is the old one. For each condition in a <code>requires</code>, ask what establishes it. Then ask whether it says anything about the heap, or only about numbers.</p>
+    <h2>A division of labour</h2>
+    <p>Code and specification are joint work. An agent can write either, and often should. Who holds the pen is not the interesting question.</p>
+    <p>The loop is. Someone writes a specification. Both sides then attack it, looking for a heap that satisfies every hypothesis and breaks the conclusion. The specification is ready when neither the human nor the agent can find one.</p>
+    <p>Only then does proving start, and that part can go to whoever is cheaper.</p>
+    <p>Refuting needs one counterexample. Proving needs the whole argument. That asymmetry is why attacking comes first.</p>
+    <p>Two caveats. An agent told to prove will weaken a hypothesis to go green, so it never edits a <code>val</code> and everything it closes gets a vacuity check. And a fixed point is not correctness. It only means nobody has found the next counterexample yet. I found the first of the three. The other two surfaced only because somebody kept looking after I had stopped.</p>
+    <p>The agent&#x27;s best output was not the lemmas it closed. It was the write-up. Ask for a reasoned report, not a diff.</p>
+  </article>
+  <p class="post-back"><a href="../blog.html">&larr; Back to blog</a></p>
+</main>
+</body>
+</html>

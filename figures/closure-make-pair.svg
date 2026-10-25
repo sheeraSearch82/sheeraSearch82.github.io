@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 392" font-family="Inter, 'Segoe UI', Arial, sans-serif"><rect width="820" height="392" fill="#fff"/><text x="20" y="26" font-size="13" text-anchor="start" font-weight="700" fill="#1B3A6B">make_pair 2: different arities move the infix offset</text><text x="192.0" y="60" font-size="13" text-anchor="middle" font-weight="600" fill="#1B3A6B">Native (ocamlopt)</text>
+<rect x="50" y="70" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="185.0" y="91" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">header: Closure_tag, size 7</text>
+<text x="326" y="91" font-size="11" text-anchor="end" font-weight="400" fill="#666">−8</text>
+<rect x="50" y="104" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="65.0" y="125" font-size="11" text-anchor="middle" font-weight="400" fill="#666">0</text>
+<text x="185.0" y="125" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">f: curried pointer</text>
+<text x="326" y="125" font-size="11" text-anchor="end" font-weight="400" fill="#666">+0</text>
+<rect x="50" y="138" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="65.0" y="159" font-size="11" text-anchor="middle" font-weight="400" fill="#666">1</text>
+<text x="185.0" y="159" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">f: info, arity 2, startenv 6</text>
+<text x="326" y="159" font-size="11" text-anchor="end" font-weight="400" fill="#666">+8</text>
+<rect x="50" y="172" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="65.0" y="193" font-size="11" text-anchor="middle" font-weight="400" fill="#666">2</text>
+<text x="185.0" y="193" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">f: total pointer</text>
+<text x="326" y="193" font-size="11" text-anchor="end" font-weight="400" fill="#666">+16</text>
+<rect x="50" y="206" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="65.0" y="227" font-size="11" text-anchor="middle" font-weight="400" fill="#666">3</text>
+<text x="185.0" y="227" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">infix header: offset 4</text>
+<text x="326" y="227" font-size="11" text-anchor="end" font-weight="400" fill="#666">+24</text>
+<rect x="50" y="240" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="65.0" y="261" font-size="11" text-anchor="middle" font-weight="400" fill="#666">4</text>
+<text x="185.0" y="261" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">g: code pointer</text>
+<text x="326" y="261" font-size="11" text-anchor="end" font-weight="400" fill="#666">+32</text>
+<rect x="50" y="274" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="65.0" y="295" font-size="11" text-anchor="middle" font-weight="400" fill="#666">5</text>
+<text x="185.0" y="295" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">g: info, arity 1, startenv 2</text>
+<text x="326" y="295" font-size="11" text-anchor="end" font-weight="400" fill="#666">+40</text>
+<rect x="50" y="308" width="284" height="34" fill="#E8F4F4" stroke="#C8D4E3"/>
+<text x="65.0" y="329" font-size="11" text-anchor="middle" font-weight="400" fill="#666">6</text>
+<text x="185.0" y="329" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">k = 2 (shared)</text>
+<text x="326" y="329" font-size="11" text-anchor="end" font-weight="400" fill="#666">+48</text>
+<rect x="51" y="309" width="282" height="32" fill="none" stroke="#0E7C7B" stroke-width="2"/>
+<path d="M50,257.0 H34 V121.0 H42" fill="none" stroke="#9AA8BA" stroke-width="1.3"/>
+<path d="M49,121.0 l-7,-4 l0,8 z" fill="#9AA8BA"/><text x="612.0" y="60" font-size="13" text-anchor="middle" font-weight="600" fill="#1B3A6B">Bytecode (ocamlc)</text>
+<rect x="470" y="70" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="605.0" y="91" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">header: Closure_tag, size 6</text>
+<text x="746" y="91" font-size="11" text-anchor="end" font-weight="400" fill="#666">−8</text>
+<rect x="470" y="104" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="485.0" y="125" font-size="11" text-anchor="middle" font-weight="400" fill="#666">0</text>
+<text x="605.0" y="125" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">f: code pointer</text>
+<text x="746" y="125" font-size="11" text-anchor="end" font-weight="400" fill="#666">+0</text>
+<rect x="470" y="138" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="485.0" y="159" font-size="11" text-anchor="middle" font-weight="400" fill="#666">1</text>
+<text x="605.0" y="159" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">f: info, arity 0, startenv 5</text>
+<text x="746" y="159" font-size="11" text-anchor="end" font-weight="400" fill="#666">+8</text>
+<rect x="470" y="172" width="284" height="34" fill="#ECEFF4" stroke="#C8D4E3"/>
+<text x="485.0" y="193" font-size="11" text-anchor="middle" font-weight="400" fill="#666">2</text>
+<text x="605.0" y="193" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">infix header: offset 3</text>
+<text x="746" y="193" font-size="11" text-anchor="end" font-weight="400" fill="#666">+16</text>
+<rect x="470" y="206" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="485.0" y="227" font-size="11" text-anchor="middle" font-weight="400" fill="#666">3</text>
+<text x="605.0" y="227" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">g: code pointer</text>
+<text x="746" y="227" font-size="11" text-anchor="end" font-weight="400" fill="#666">+24</text>
+<rect x="470" y="240" width="284" height="34" fill="#fff" stroke="#C8D4E3"/>
+<text x="485.0" y="261" font-size="11" text-anchor="middle" font-weight="400" fill="#666">4</text>
+<text x="605.0" y="261" font-size="12" text-anchor="middle" font-weight="700" fill="#2E2E2E">g: info, arity 0, startenv 2</text>
+<text x="746" y="261" font-size="11" text-anchor="end" font-weight="400" fill="#666">+32</text>
+<rect x="470" y="274" width="284" height="34" fill="#E8F4F4" stroke="#C8D4E3"/>
+<text x="485.0" y="295" font-size="11" text-anchor="middle" font-weight="400" fill="#666">5</text>
+<text x="605.0" y="295" font-size="12" text-anchor="middle" font-weight="400" fill="#2E2E2E">k = 2 (shared)</text>
+<text x="746" y="295" font-size="11" text-anchor="end" font-weight="400" fill="#666">+40</text>
+<rect x="471" y="275" width="282" height="32" fill="none" stroke="#0E7C7B" stroke-width="2"/>
+<path d="M470,223.0 H454 V121.0 H462" fill="none" stroke="#9AA8BA" stroke-width="1.3"/>
+<path d="M469,121.0 l-7,-4 l0,8 z" fill="#9AA8BA"/><text x="20" y="378" font-size="11" text-anchor="start" font-weight="400" fill="#666">make_pair 2 · bold = differs between native and bytecode</text></svg>
