@@ -20,7 +20,7 @@
     <a href="../talks.html">News</a>
     <a href="../teaching.html#students">Students</a>
   </nav>
-  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/team/" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/about/#team" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
 </aside>
 <main class="main">
   <div class="page-header"><h1>What the Specifications Did Not Say</h1></div>
@@ -85,7 +85,7 @@ let g&#x27;&#x27; = makeBlue obj g&#x27; in
     <p><code>well_formed_heap_part2</code> requires every pointer field to target an object of the heap. Infix objects are the interior closures OCaml uses for mutually recursive functions. They are never in the object list, because the walk steps by <code>wosize</code> and skips over them inside their parent.</p>
     <p>So a heap with a field pointing at an infix object cannot satisfy <code>well_formed_heap</code>. OCaml produces such heaps all the time.</p>
     <p>The machinery existed. <code>resolve_object</code> maps an infix object to its parent, and leaves anything else unchanged. Mark calls it on every field target. But the proof only ever gives it targets from the object list, and infix objects are never in that list. So it always returns the target unchanged. The call does nothing the proof can see.</p>
-    <p><a href="https://fplaunchpad.org/team/">Akhil Tulluri</a> found the same thing from the other side, by running <code>make coldstart</code> and watching it die on <code>camlinternalFormat.ml</code>. That file is full of mutually recursive functions.</p>
+    <p><a href="https://fplaunchpad.org/about/#team">Akhil Tulluri</a> found the same thing from the other side, by running <code>make coldstart</code> and watching it die on <code>camlinternalFormat.ml</code>. That file is full of mutually recursive functions.</p>
     <p>It has since been fixed upstream.</p>
     <p>That pairing is the lesson. Reading specifications finds inconsistencies. Running the collector finds heaps your specification quietly excludes. An audit could find those too, in principle. Running the thing is just much faster.</p>
     <h2>What is still missing</h2>
