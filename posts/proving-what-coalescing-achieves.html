@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proving What Coalescing Achieves — Sheera Shamsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../_layout.css"/>
+  <link rel="stylesheet" href="../_post.css"/>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-top"><div class="name">Sheera Shamsu</div><div class="role">Expertise in Formal Verification of Critical Software<br>Assistant Professor, TKM College</div></div>
+  <nav>
+    <a href="../index.html">About</a>
+    <a href="../publications.html">Publications &amp; Talks</a>
+    <a href="../teaching.html">Teaching</a>
+    <a href="../videos.html">Videos</a>
+    <a href="../blog.html" class="active">Blog</a>
+    <a href="../talks.html">News</a>
+    <a href="../teaching.html#students">Students</a>
+  </nav>
+  <div class="sidebar-footer">sheera.shms@gmail.com<br>Kollam, Kerala, India<br><a href="https://fplaunchpad.org/about/#team" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.72rem;">FPLaunchpad Team Member</a></div>
+</aside>
+<main class="main">
+  <div class="page-header"><h1>Proving What Coalescing Achieves</h1></div>
+  <div class="post-meta">September 2026</div>
+  <article class="post">
+    <p>The coalescing pass is now proven. This post is what the theorem says, and how it got there.</p>
+    <p>The statement has four parts.</p>
+    <p>No free memory is gained or lost. The total size of all free blocks is the same before and after.</p>
+    <p>The free memory is in the same place. The same words of the heap are covered by free blocks before and after.</p>
+    <p>The merging actually happened. No two free blocks sit next to each other afterwards.</p>
+    <p>Live objects are untouched. Every live object survives, at the same address, with the same size.</p>
+    <p>The third is the point of the pass. The other three are what stop it being achieved the wrong way. A collector that turned every live object into free memory would satisfy the third on its own.</p>
+    <h2>Why it was hard</h2>
+    <p>The heap describes itself. There is no list of objects stored anywhere. You find them by reading a header, taking its size, and jumping that far.</p>
+    <p>So the object list is computed from the same bytes the collector writes. One header write changes which objects exist. Merge two blocks and the absorbed one is not deleted. The walk stops landing on it.</p>
+    <p>That is why nothing stays local. Asking whether a distant object survives is never a question about that object. It is a question about every header below it, because that is how the walk reached it.</p>
+    <h2>Four interventions</h2>
+    <p>I gave the properties in English and handed the F* to an agent. Four times I had to step in, and each time the intervention was short and the effect was large.</p>
+    <p>*<em>Can free space decrease?</em><em> I asked this early. The agent said no and gave the reason: merging changes no colours, and the merged block&#x27;s size is the sum of the parts. Asking it exposed something else. The conserved quantity is whole size, header plus fields, not wosize. And the </em>set<em> of free blocks shrinks while the </em>amount* of free memory does not. Those two facts run through everything that followed.</p>
+    <p>*<em>The run has to start where an object starts.</em>* Three specifications came back false, all in the same way. Each described the run being merged by arithmetic alone: this address plus this many words equals that address. True of the numbers, and it says nothing about the heap. So the run could begin in the middle of one object and end in the middle of another. The flush then overwrites a header holding the walk together, and an object higher up stops existing. I caught the first one. The agent caught the other two, with a counterexample it confirmed against the solver.</p>
+    <p>*<em>Use the scalar form of density.</em>* The agent was stuck for a long time proving that a merge keeps the heap fully tiled by objects. It kept attacking the quantified statement, one clause per position. There was already a module in the tree that says the same thing as a single address: where the walk stops. Its own header comment said that quantified density is awkward to transport across a pass that changes block sizes. I pointed the agent at it. The lemma closed on the first attempt.</p>
+    <p>*<em>Split the case, do not raise the limit.</em>* When a proof timed out, the agent&#x27;s instinct was to give the solver more room. I said to split instead. That turned one opaque failure into a sequence of small named ones, and each named one was a real missing fact rather than a resource problem. The same instruction, given once, is what made the last three properties go quickly after the first went slowly.</p>
+    <h2>What the agent was good at</h2>
+    <p>Two things, clearly.</p>
+    <p>Finding counterexamples. Given a suspect statement it constructed the heap that breaks it, then confirmed the gap by running the natural proof and showing which assertion the solver could not discharge. That is faster than I would have been.</p>
+    <p>Grinding. The last three properties are the same induction with different invariants, and each one is several hundred lines of case analysis. Once the shape was right, it wrote them.</p>
+    <h2>What it was not good at</h2>
+    <p>Judging its own specifications. The false ones typechecked, were non-vacuous, and composed at their call sites. Nothing in the local picture said they were wrong. Seeing it needed asking what a hypothesis was actually about, which is a question about the heap, not about the proof.</p>
+    <p>And knowing when to change approach. It attacked quantified density many times. The scalar form was already in the repository, with a comment explaining exactly why it existed.</p>
+    <h2>A wrong invariant, twice</h2>
+    <p>Worth recording, because it is the same mistake in a new place.</p>
+    <p>For the non-adjacency property the first invariant said: no free block ends exactly at the cursor. That is false immediately after a merge, because the merged block always ends at the cursor and is free. It had confused the boundary this merge creates with the boundary the next run will need protected.</p>
+    <p>The second attempt folded that check into the other clause, which made a general lemma responsible for a fact only its caller could know.</p>
+    <p>The version that worked conditions both clauses on whether a run is currently pending. Three transitions, each independently provable.</p>
+    <p>Same failure as the false specifications: a statement that looks right until you ask which heap, and which moment.</p>
+    <h2>Where it stands</h2>
+    <p>All four properties verified, no admits, whole project green.</p>
+    <p>One honest caveat. Nothing outside this file refers to the theorem yet. The load-bearing coalescing proof in the repository is a different one, which shows the fused sweep-and-coalesce pass produces the same bytes. This theorem says what coalescing achieves rather than what it equals, and that statement did not exist before.</p>
+  </article>
+  <p class="post-back"><a href="../blog.html">&larr; Back to blog</a></p>
+</main>
+</body>
+</html>

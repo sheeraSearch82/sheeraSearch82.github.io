@@ -1,185 +1,135 @@
-/* ── SHARED STYLES ─────────────────────────────────────────────── */
+/* Quiet theme: one calm column, serif text, sage ink. */
 :root {
-  --navy:       #1B3A6B;
-  --teal:       #0E7C7B;
-  --teal-dark:  #0D4A4A;
-  --teal-light: #E8F4F4;
-  --grey-light: #F3F6FA;
-  --grey-mid:   #C8D4E3;
-  --text:       #2E2E2E;
-  --text-mid:   #555555;
-  --white:      #FFFFFF;
+  --paper:  #F6F7F4;
+  --ink:    #232B28;
+  --soft:   #6E7672;
+  --hair:   #DADFD9;
+  --accent: #47655F;
+  --mark:   #A9B4AE;
+  --col:    40rem;
+
+  /* old names, kept so existing pages still work */
+  --navy: var(--ink); --teal: var(--accent); --teal-dark: var(--accent);
+  --teal-light: transparent; --grey-light: #ECEFEA; --grey-mid: var(--hair);
+  --text: var(--ink); --text-mid: var(--soft); --white: var(--paper);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { -webkit-text-size-adjust: 100%; }
 body {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  color: var(--text);
-  background: var(--grey-light);
-  line-height: 1.65;
-  display: flex;
-  min-height: 100vh;
-}
-
-/* ── SIDEBAR ───────────────────────────────────────────────────── */
-.sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: var(--navy);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  z-index: 100;
-  padding: 0;
-}
-
-.sidebar-top {
-  padding: 2rem 1.4rem 1.4rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.sidebar-top .name {
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 0.3rem;
-}
-
-.sidebar-top .role {
-  color: rgba(255,255,255,0.55);
-  font-size: 0.78rem;
-  line-height: 1.4;
-}
-
-.sidebar nav { flex: 1; padding: 0.8rem 0; }
-
-.sidebar nav a {
+  font-family: 'Spectral', Georgia, 'Times New Roman', serif;
+  font-weight: 300;
+  font-size: 1.12rem;
+  line-height: 1.75;
+  color: var(--ink);
+  background: var(--paper);
   display: block;
-  padding: 0.55rem 1.4rem;
-  color: rgba(255,255,255,0.78);
+  min-height: 100vh;
+}
+strong, b { font-weight: 500; }
+
+/* header (the old sidebar, laid flat) */
+.sidebar {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 2.6rem 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+}
+.sidebar-top { padding: 0; border: 0; }
+.sidebar-top .name, .sidebar-header .name { font-size: 1.05rem; font-weight: 400; letter-spacing: 0.01em; }
+.sidebar-top .name::before { content: "\22A2"; color: var(--mark); margin-right: 0.55em; font-family: 'STIX Two Math', 'Cambria Math', 'Apple Symbols', serif; }
+.sidebar-top .role, .sidebar-footer { display: none; }
+.sidebar nav { display: flex; flex-wrap: wrap; gap: 0.2rem 1.3rem; padding: 0; }
+.sidebar nav a {
+  color: var(--soft);
+  font-size: 0.95rem;
   text-decoration: none;
-  font-size: 0.88rem;
-  border-left: 3px solid transparent;
-  transition: all 0.18s;
+  padding: 0;
+  border: 0;
+  background: none;
 }
+.sidebar nav a:hover { color: var(--ink); text-decoration: none; }
+.sidebar nav a.active { color: var(--ink); }
 
-.sidebar nav a:hover,
-.sidebar nav a.active {
-  color: #fff;
-  background: rgba(255,255,255,0.06);
-  border-left-color: var(--teal);
-}
-
-.sidebar-footer {
-  padding: 1rem 1.4rem;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-/* ── MAIN ──────────────────────────────────────────────────────── */
+/* page column */
 .main {
-  margin-left: 240px;
-  flex: 1;
-  max-width: 860px;
-  padding: 2.8rem 2.4rem 4rem;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 6rem;
 }
 
-/* ── PAGE HEADER ───────────────────────────────────────────────── */
-.page-header {
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 3px solid var(--teal);
-}
-.page-header h1 {
-  font-size: 1.7rem;
-  color: var(--navy);
-  font-weight: 700;
-}
+.page-header { margin-bottom: 3rem; padding: 0; border: 0; }
+.page-header h1 { font-size: 2.1rem; font-weight: 300; line-height: 1.25; color: var(--ink); }
 
-/* ── SECTIONS ──────────────────────────────────────────────────── */
-section { margin-bottom: 2.4rem; }
-
-section h2 {
-  font-size: 1.1rem;
-  color: var(--navy);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 1rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid var(--grey-mid);
+section { margin-bottom: 3.6rem; }
+section h2, .main h2 {
+  font-size: 1.05rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--soft);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 1.2rem;
+  padding: 0;
+  border: 0;
 }
+p { margin-bottom: 1rem; }
 
-/* ── CARDS ─────────────────────────────────────────────────────── */
+/* entries (old cards): no boxes, just space */
 .card {
-  background: var(--white);
-  border-radius: 6px;
-  padding: 1.2rem 1.4rem;
-  margin-bottom: 1rem;
-  border-left: 4px solid var(--teal);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 2rem;
 }
-
-.card .card-title {
-  font-weight: 700;
-  color: var(--navy);
-  font-size: 0.97rem;
-  margin-bottom: 0.2rem;
-}
-
-.card .card-meta {
-  font-size: 0.82rem;
-  color: var(--teal-dark);
-  margin-bottom: 0.4rem;
-  font-weight: 600;
-}
-
-.card p, .card li {
-  font-size: 0.88rem;
-  color: var(--text-mid);
-  line-height: 1.6;
-}
-
+.card .card-title { font-weight: 400; font-size: 1.12rem; color: var(--ink); margin-bottom: 0.1rem; }
+.card .card-title a { color: var(--ink); }
+.card .card-meta { font-size: 0.92rem; color: var(--soft); font-weight: 300; margin-bottom: 0.4rem; }
+.card p, .card li { font-size: 1rem; color: var(--ink); line-height: 1.7; }
 .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
 
-/* ── NEWS ITEMS ────────────────────────────────────────────────── */
-.news-item {
-  display: flex;
-  gap: 1rem;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--grey-mid);
-  font-size: 0.88rem;
-}
-.news-item:last-child { border-bottom: none; }
-.news-date {
-  min-width: 90px;
-  color: var(--teal-dark);
-  font-weight: 600;
-  font-size: 0.82rem;
-  padding-top: 0.1rem;
-}
+/* news */
+.news-item { display: flex; gap: 1rem; padding: 0 0 1.4rem; border: 0; font-size: 1rem; }
+.news-date { flex: 0 0 6.5rem; min-width: 6.5rem; color: var(--soft); font-weight: 300; font-size: 0.92rem; padding-top: 0.08rem; }
+.news-item img { border-radius: 2px; }
+.news-item div[style*="margin-left"] { margin-left: 7.5rem !important; }
+.news-item div[style*="box-shadow"] { box-shadow: none !important; border-radius: 2px !important; }
 
-/* ── SKILL TAGS ────────────────────────────────────────────────── */
-.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
-.tag {
-  background: var(--teal-light);
-  color: var(--teal-dark);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.2rem 0.7rem;
-  border-radius: 20px;
-}
+/* course pages: calm the banner and the section links */
+body .course-banner { background: none; border: 0; border-radius: 0; padding: 0; margin-bottom: 2.4rem; }
+body .course-banner .course-code { color: var(--soft); font-size: 0.92rem; font-weight: 300; font-style: italic; text-transform: none; letter-spacing: 0; }
+body .course-banner h1 { color: var(--ink); font-size: 2.1rem; font-weight: 300; }
+body .course-banner .course-meta { color: var(--soft); font-size: 0.92rem; }
+body .section-nav { gap: 0.2rem 1.1rem; }
+body .section-nav a { background: none; color: var(--accent); font-size: 0.92rem; font-weight: 300; padding: 0; border-radius: 0; }
+body .section-nav a:hover { background: none; color: var(--ink); }
+body .placeholder { background: none; border: 1px dashed var(--hair); border-radius: 2px; }
 
-/* ── LINKS ─────────────────────────────────────────────────────── */
-a { color: var(--teal); text-decoration: none; }
-a:hover { text-decoration: underline; color: var(--teal-dark); }
+/* tags read as a quiet list, not pills */
+.tags { display: block; margin-top: 0.3rem; font-size: 0.9rem; color: var(--soft); font-style: italic; }
+.tag { background: none; color: var(--soft); font-weight: 300; padding: 0; border-radius: 0; font-size: inherit; }
+.tag + .tag::before { content: ", "; }
 
-/* ── RESPONSIVE ────────────────────────────────────────────────── */
-@media (max-width: 720px) {
-  .sidebar { display: none; }
-  .main { margin-left: 0; padding: 1.4rem 1rem 3rem; }
+a { color: var(--accent); text-decoration: underline; text-decoration-color: var(--hair); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+img { max-width: 100%; }
+
+@media (max-width: 640px) {
+  body { font-size: 1.05rem; }
+  .sidebar { padding-top: 1.8rem; }
+  .main { padding-top: 3rem; }
+  .page-header h1 { font-size: 1.8rem; }
+  .news-item, .news-item > div[style*="display:flex"] { flex-direction: column !important; gap: 0.2rem !important; }
+  .news-date { flex-basis: auto; }
+  .news-item div[style*="margin-left"] { margin-left: 0 !important; }
+  .news-item div[style*="width:70%"] { width: 100% !important; height: auto !important; }
 }
