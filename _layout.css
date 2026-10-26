@@ -1,11 +1,11 @@
 /* Quiet theme: one calm column, serif text, sage ink. */
 :root {
-  --paper:  #F6F7F4;
-  --ink:    #232B28;
-  --soft:   #6E7672;
-  --hair:   #DADFD9;
-  --accent: #47655F;
-  --mark:   #A9B4AE;
+  --paper:  #F8F4EC;
+  --ink:    #2F2A25;
+  --soft:   #7B7168;
+  --hair:   #E4DCCF;
+  --accent: #5E6E3F;
+  --mark:   #CFA3A0;
   --col:    40rem;
 
   /* old names, kept so existing pages still work */
@@ -28,6 +28,23 @@ body {
   min-height: 100vh;
 }
 strong, b { font-weight: 500; }
+
+/* pastel flowers in the side margins (wide screens only) */
+body::before, body::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  width: min(300px, calc((100vw - 44rem) / 2));
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.45;
+}
+[hidden] { display: none !important; }
+body::before { left: 0; bottom: 0; height: min(86vh, 820px); background-image: url("figures/flora-left.svg"); background-position: left bottom; }
+body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url("figures/flora-right.svg"); background-position: right top; }
+.sidebar, .main { position: relative; z-index: 1; }
+@media (max-width: 1000px) { body::before, body::after { display: none; } }
 
 /* header (the old sidebar, laid flat) */
 .sidebar {
