@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sheera Shamsu</title>
+    <link>https://sheerasearch82.github.io/blog.html</link>
+    <atom:link href="https://sheerasearch82.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Notes on verifying a garbage collector in F* and Pulse.</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 25 Oct 2026 12:00:00 +0530</lastBuildDate>
+
+    <item>
+      <title>OCaml Closures, Simply Explained</title>
+      <link>https://sheerasearch82.github.io/posts/ocaml-closures-simply-explained.html</link>
+      <guid>https://sheerasearch82.github.io/posts/ocaml-closures-simply-explained.html</guid>
+      <pubDate>Sun, 25 Oct 2026 12:00:00 +0530</pubDate>
+      <description>How OCaml lays out a closure in memory, native and bytecode, and which words the GC must scan. Four small examples, one diagram each.</description>
+    </item>
+
+    <item>
+      <title>The Part You Cannot Hand Off</title>
+      <link>https://sheerasearch82.github.io/posts/the-part-you-cannot-hand-off.html</link>
+      <guid>https://sheerasearch82.github.io/posts/the-part-you-cannot-hand-off.html</guid>
+      <pubDate>Mon, 21 Sep 2026 15:16:00 +0530</pubDate>
+      <description>I wrote four properties in English and handed the F* to an assistant. Three of the specifications that came back were false, all in the same way.</description>
+    </item>
+
+    <item>
+      <title>What the Specifications Did Not Say</title>
+      <link>https://sheerasearch82.github.io/posts/what-the-specifications-did-not-say.html</link>
+      <guid>https://sheerasearch82.github.io/posts/what-the-specifications-did-not-say.html</guid>
+      <pubDate>Mon, 21 Sep 2026 14:29:00 +0530</pubDate>
+      <description>Auditing the specifications of a verified OCaml garbage collector. Three findings, all of them gaps between what the proofs cover and the heaps OCaml actually produces.</description>
+    </item>
+  </channel>
+</rss>
