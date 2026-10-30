@@ -41,8 +41,8 @@ body::before, body::after {
   opacity: 0.55;
 }
 [hidden] { display: none !important; }
-body::before { left: 0; bottom: 0; height: min(86vh, 820px); background-image: url("figures/margin-left.svg?v=5"); background-position: left bottom; }
-body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url("figures/margin-right.svg?v=5"); background-position: right top; }
+body::before { left: 0; bottom: 0; height: min(86vh, 820px); background-image: url("figures/margin-left.svg?v=6"); background-position: left bottom; }
+body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url("figures/margin-right.svg?v=6"); background-position: right top; }
 .sidebar, .main { position: relative; z-index: 1; }
 @media (max-width: 1000px) { body::before, body::after { display: none; } }
 
