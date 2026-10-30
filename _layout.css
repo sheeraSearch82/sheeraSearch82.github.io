@@ -41,8 +41,8 @@ body::before, body::after {
   opacity: 0.55;
 }
 [hidden] { display: none !important; }
-body::before { left: 0; bottom: 0; height: min(86vh, 820px); background-image: url("figures/margin-left.svg?v=6"); background-position: left bottom; }
-body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url("figures/margin-right.svg?v=6"); background-position: right top; }
+body::before { left: 0; bottom: 0; height: min(86vh, 820px); background-image: url("figures/margin-left.svg?v=7"); background-position: left bottom; }
+body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url("figures/margin-right.svg?v=7"); background-position: right top; }
 .sidebar, .main { position: relative; z-index: 1; }
 @media (max-width: 1000px) { body::before, body::after { display: none; } }
 
@@ -62,10 +62,10 @@ body::after  { right: 0; top: 0; height: min(70vh, 640px); background-image: url
 .sidebar-top .name::before { content: "\22A2"; color: var(--mark); margin-right: 0.55em; font-family: 'STIX Two Math', 'Cambria Math', 'Apple Symbols', serif; }
 .sidebar-footer { display: none; }
 .sidebar-top .role { display: block; font-size: 0.88rem; font-style: italic; color: var(--soft); margin: 0.1rem 0 0 1.55em; line-height: 1.4; }
-.sidebar nav { display: flex; flex-wrap: wrap; gap: 0.2rem 1.3rem; padding: 0; }
+.sidebar nav { display: flex; flex-wrap: wrap; gap: 0.2rem 1.05rem; padding: 0; }
 .sidebar nav a {
   color: var(--soft);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   text-decoration: none;
   padding: 0;
   border: 0;
